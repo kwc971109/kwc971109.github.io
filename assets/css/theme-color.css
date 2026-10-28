@@ -1,0 +1,80 @@
+/* 남색·하늘색(차분한 게임 메뉴 느낌) 색 테마 값 — 배치는 그대로 */
+:root{
+  --t-bg:#06122e; --t-band:#0b1c45; --t-card:#0b1c45; --t-ink:#ffffff; --t-ink2:#dbe6f7; --t-muted:#a9bfe3; --t-line:#22407e;
+  --t-acc:#4cc8ff; --t-acc-ink:#8fdcff; --t-on-acc:#06122e; --t-acc-hover:#ffffff; --t-shadow:10px 10px 0 rgba(31,111,255,.45); --t-frame:1px solid rgba(76,200,255,.55);
+  --t-hero:6,18,46;
+  --t-header:rgba(6,18,46,.96); --t-header-line:1px solid rgba(76,200,255,.45);
+  --t-ghost-bg:rgba(255,255,255,.06); --t-ghost-line:rgba(255,255,255,.7); --t-ghost-ink:#ffffff;
+  --t-tag-bg:rgba(76,200,255,.14); --t-tag-ink:#8fdcff;
+  --t-ai-bg:#0b1c45; --t-about-bg:#0b1c45; --t-footer:#040c20; --t-focus:#ffffff;
+  --t-display:"Barlow Condensed","Pretendard Variable",Pretendard,sans-serif; --t-display-style:italic; --t-display-weight:800;
+}
+/* 색 테마 공통(2026-10-28): 배치는 그대로 두고 색·글꼴·버튼·카드 모양만 바꾼다. 각 테마 파일이 아래 변수를 채운다.
+   --t-bg 바탕, --t-band 띠 바탕, --t-card 카드, --t-ink 글자, --t-ink2 보조 글자, --t-muted 흐린 글자, --t-line 선,
+   --t-acc 강조(채움), --t-acc-ink 강조 글자, --t-on-acc 강조 위 글자, --t-shadow 카드 그림자, --t-hero 첫 화면 덮개 색(rgb 숫자),
+   --t-display 큰 제목 글꼴, --t-display-style 기울임, --t-display-weight 굵기 */
+:root{
+  --bg:var(--t-bg); --surface:var(--t-card); --surface-2:var(--t-band); --ink:var(--t-ink); --ink-2:var(--t-ink2); --muted:var(--t-muted); --line:var(--t-line);
+  --accent:var(--t-acc); --accent-ink:var(--t-acc-ink); --accent-soft:var(--t-band); --on-accent:var(--t-on-acc); --level:var(--t-acc-ink); --combat:var(--t-acc-ink);
+}
+body{background:var(--t-bg);color:var(--t-ink)}
+::selection{background:var(--t-acc);color:var(--t-on-acc)}
+.site-header{background:var(--t-header,var(--t-bg));-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:var(--t-header-line,1px solid var(--t-line))}
+.brand b{color:var(--t-brand,var(--t-ink))}
+.brand span{color:var(--t-acc-ink)}
+.nav a{color:var(--t-nav,var(--t-ink2))}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--t-acc-ink)}
+.nav a.nav-pr,.nav a.nav-pr:hover{background:var(--t-acc);color:var(--t-on-acc);border-radius:0;clip-path:polygon(7% 0,100% 0,93% 100%,0 100%);padding:6px 16px}
+h1,h2,.phead h3,.pcard h3,.case-hero h1,.text-hero h1,.case h2,.section-head h2{font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:var(--t-display-weight,800)}
+.hero-video h1 em{font-style:inherit}
+/* 버튼: 평행사변형 */
+.btn{border-radius:0;font-weight:800;clip-path:polygon(6% 0,100% 0,94% 100%,0 100%);padding-left:24px;padding-right:24px}
+.btn-primary{background:var(--t-acc);border-color:var(--t-acc);color:var(--t-on-acc)}
+.btn-primary:hover{background:var(--t-acc-hover,var(--t-acc));color:var(--t-on-acc)}
+.btn-ghost{background:var(--t-ghost-bg,transparent);border-color:var(--t-ghost-line,var(--t-acc));color:var(--t-ghost-ink,var(--t-ink))}
+.btn-ghost:hover{background:var(--t-band)}
+/* 첫 화면: 배치 그대로, 영상 위 덮개만 테마 색으로 */
+.hero-video::after{background:linear-gradient(90deg,rgba(var(--t-hero),.86) 0%,rgba(var(--t-hero),.52) 42%,rgba(var(--t-hero),.1) 78%),linear-gradient(180deg,rgba(var(--t-hero),0) 62%,var(--t-bg) 100%)}
+@media(max-width:640px){.hero-video::after{background:linear-gradient(180deg,rgba(var(--t-hero),.25) 0%,rgba(var(--t-hero),.6) 45%,rgba(var(--t-hero),.96) 100%)}}
+.hero-video h1{color:var(--t-hero-h1,#fff);text-shadow:var(--t-hero-shadow,none)}
+.hero-video .who{color:var(--t-hero-who,#fff);border-left:6px solid var(--t-acc);padding-left:12px}
+/* 프로젝트 칸·카드: 각진 모서리, 테마 그림자 */
+.g-main,.ai-card,.ai-card .ai-media,.stats li,.doclist a,.doclist em,.chip,.facts>div,.qa>div,.spec,.pillar,.card,.zone,.device,.callout,figure img,.g-thumb,details.more>div,.pick,.flow li span,table.t{border-radius:0}
+.g-main{border:var(--t-frame,2px solid var(--t-line));box-shadow:var(--t-shadow)}
+.g-thumb[aria-pressed="true"]{border-color:var(--t-acc)}
+.phead .k,.ai-card .k{display:inline-block;background:var(--t-tag-bg,var(--t-acc));color:var(--t-tag-ink,var(--t-on-acc));padding:3px 12px;clip-path:polygon(0 0,100% 0,94% 100%,0 100%)}
+.phead h3 a{color:var(--t-ink)}
+.phead h3 a:hover{color:var(--t-acc-ink)}
+.ai-card{background:var(--t-card);border:var(--t-frame,2px solid var(--t-line));box-shadow:var(--t-shadow)}
+.stats li{background:var(--t-band);border-color:transparent}
+.stats b{color:var(--t-stat,var(--t-ink));font-family:var(--t-display);font-style:var(--t-display-style,normal)}
+.doclist a{background:var(--t-card);border:var(--t-frame,2px solid var(--t-line))}
+.doclist a:hover{background:var(--t-band)}
+.doclist em{background:var(--t-acc);color:var(--t-on-acc)}
+.doclist a span::after{content:"";display:inline-block;width:.72em;height:.72em;margin-left:.4em;vertical-align:-.04em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat}
+.chip{border:1px solid var(--t-line);color:var(--t-ink2);background:transparent}
+.about h3{color:var(--t-acc-ink)}
+#ai{background:var(--t-ai-bg,var(--t-bg))}
+#docs{background:var(--t-docs-bg,var(--t-bg))}
+#about{background:var(--t-about-bg,var(--t-bg))}
+.site-footer{background:var(--t-footer,var(--t-band));border-top:1px solid var(--t-line)}
+.site-footer,.site-footer h2{color:var(--t-footer-ink,var(--t-ink))}
+.site-footer a{color:var(--t-footer-link,var(--t-acc-ink))}
+.site-footer small{color:var(--t-footer-small,var(--t-muted))}
+a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{outline:3px solid var(--t-focus,var(--t-acc));outline-offset:2px;box-shadow:0 0 0 6px var(--t-bg)}
+
+/* 상세 페이지: 예전 검정 기준으로 남아 있던 색을 테마 색으로 */
+.text-hero{background:linear-gradient(180deg,var(--t-band) 0%,var(--t-bg) 100%);border-bottom-color:var(--t-line)}
+.case-hero{background:var(--t-bg)}
+.case-hero .cap{background:linear-gradient(180deg,transparent,rgba(var(--t-hero),.84))}
+.qmedia,.project .media{background:var(--t-band)}
+.pacing-tip{background:var(--t-band);color:var(--t-ink);border:1px solid var(--t-acc);border-radius:0}
+.iter li.drop::before{background:var(--t-line)}
+.chart-scroll{border-radius:0}
+/* 아주 좁은 화면(400px 이하): 이전·다음 링크를 위아래로 두어 한 줄씩 */
+@media(max-width:400px){.next-case{flex-direction:column;gap:14px}.next-case a:last-child{align-self:flex-end}}
+
+/* 테마별 덧칠 */
+.section-head h2{display:inline-block;padding-bottom:8px;border-bottom:3px solid #4cc8ff}
+.phead .k,.ai-card .k{border-left:3px solid #4cc8ff;clip-path:none}
+.stats li{background:#122b63}
