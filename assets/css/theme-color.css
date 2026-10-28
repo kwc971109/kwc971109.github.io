@@ -4,7 +4,7 @@
   --t-acc:#4cc8ff; --t-acc-ink:#8fdcff; --t-on-acc:#06122e; --t-acc-hover:#ffffff; --t-shadow:10px 10px 0 rgba(31,111,255,.45); --t-frame:1px solid rgba(76,200,255,.55);
   --t-hero:6,18,46;
   --t-header:rgba(6,18,46,.96); --t-header-line:1px solid rgba(76,200,255,.45);
-  --t-ghost-bg:rgba(255,255,255,.06); --t-ghost-line:rgba(255,255,255,.7); --t-ghost-ink:#ffffff;
+  --t-btn-bg:#163a80; --t-btn-bg-hover:#2453b3; --t-btn-ink:#ffffff; --t-btn-back:#081538; --t-btn-acc-back:#1f5fe0; --t-btn-skew:-14deg;
   --t-tag-bg:rgba(76,200,255,.14); --t-tag-ink:#8fdcff;
   --t-ai-bg:#0b1c45; --t-about-bg:#0b1c45; --t-footer:#040c20; --t-focus:#ffffff;
   --t-row:rgba(18,43,99,.75); --t-row-hover:#122b63;
@@ -25,19 +25,34 @@ body{background:var(--t-bg);color:var(--t-ink)}
 .brand span{color:var(--t-acc-ink)}
 .nav a{color:var(--t-nav,var(--t-ink2))}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--t-acc-ink)}
-.nav a.nav-pr,.nav a.nav-pr:hover{background:var(--t-acc);color:var(--t-on-acc);border-radius:0;clip-path:polygon(7% 0,100% 0,93% 100%,0 100%);padding:6px 16px}
+.nav a.nav-pr,.nav a.nav-pr:hover{background:transparent;color:var(--t-on-acc);border-radius:0;clip-path:none;padding:6px 16px;position:relative;isolation:isolate;transition:transform .12s ease}
+/* 메뉴의 PR 문서 버튼도 아래 버튼과 같은 두 겹 막대(작게) */
+.nav a.nav-pr::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(var(--t-btn-skew,-14deg));background:var(--t-acc);box-shadow:4px 4px 0 var(--t-btn-acc-back,var(--t-acc-ink));transition:background .12s ease,box-shadow .12s ease}
+.nav a.nav-pr:hover,.nav a.nav-pr:focus-visible{transform:translate(-1px,-1px)}
+.nav a.nav-pr:hover::before,.nav a.nav-pr:focus-visible::before{background:var(--t-acc-hover,var(--t-acc));box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
 h1,h2,.phead h3,.pcard h3,.case-hero h1,.text-hero h1,.case h2,.section-head h2{font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:var(--t-display-weight,800)}
 .hero-video h1 em{font-style:inherit}
-/* 버튼: 평행사변형. 버튼을 잘라 내지 않고 뒤에 기울인 판(::before)을 그려 테두리가 네 변 모두 이어지게 */
-.btn{border-radius:0;font-weight:800;padding-left:24px;padding-right:24px;position:relative;isolation:isolate;background:transparent;border-color:transparent;clip-path:none}
-.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(-12deg);border:1px solid var(--t-ghost-line,var(--t-acc));background:var(--t-ghost-bg,transparent);transition:background .15s ease,border-color .15s ease}
+/* 버튼: 두 겹 막대(2026-10-28 사용자 선택 B). 버튼을 잘라 내지 않고 뒤에 기울인 막대(::before)를 깔고, 막대 뒤에 진한 색 한 겹(그림자)을 둔다.
+   마우스를 올리면(사용자 선택 1안 '떠오름') 살짝 떠오르며 뒤 한 겹이 길어지고, 강조 버튼은 흰색·보조 버튼은 밝은 파랑이 된다. 키보드로 고를 때도 같다.
+   값: --t-btn-bg 보조 막대, --t-btn-bg-hover 보조 막대(올림), --t-btn-ink 보조 글자, --t-btn-back 보조 뒤 한 겹,
+       --t-acc 강조 막대, --t-acc-hover 강조 막대(올림), --t-btn-acc-back 강조 뒤 한 겹, --t-btn-skew 기울기 */
+.btn{border-radius:0;border-color:transparent;background:transparent;clip-path:none;position:relative;isolation:isolate;font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:800;font-size:18px;padding:10px 24px;transition:transform .12s ease}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(var(--t-btn-skew,-14deg));background:var(--t-btn-bg,var(--t-band));box-shadow:6px 6px 0 var(--t-btn-back,rgba(0,0,0,.35));transition:background .12s ease,box-shadow .12s ease}
+.btn-ghost{color:var(--t-btn-ink,var(--t-ink))}
 .btn-primary{color:var(--t-on-acc)}
-.btn-primary::before{background:var(--t-acc);border-color:var(--t-acc)}
-.btn-primary:hover{background:transparent;color:var(--t-on-acc)}
-.btn-primary:hover::before{background:var(--t-acc-hover,var(--t-acc));border-color:var(--t-acc-hover,var(--t-acc))}
-.btn-ghost{color:var(--t-ghost-ink,var(--t-ink))}
-.btn-ghost:hover{background:transparent}
-.btn-ghost:hover::before{background:var(--t-band);border-color:var(--t-acc)}
+.btn-primary::before{background:var(--t-acc);box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+.btn:hover,.btn:focus-visible{background:transparent;transform:translate(-2px,-2px)}
+.btn:hover::before,.btn:focus-visible::before{box-shadow:9px 9px 0 var(--t-btn-back,rgba(0,0,0,.35))}
+.btn-ghost:hover,.btn-ghost:focus-visible{background:transparent;color:var(--t-btn-ink,var(--t-ink))}
+.btn-ghost:hover::before,.btn-ghost:focus-visible::before{background:var(--t-btn-bg-hover,var(--t-card))}
+.btn-primary:hover,.btn-primary:focus-visible{background:transparent;color:var(--t-on-acc)}
+.btn-primary:hover::before,.btn-primary:focus-visible::before{background:var(--t-acc-hover,var(--t-acc));box-shadow:9px 9px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+/* 버튼 묶음: 뒤 한 겹이 옆 버튼에 닿지 않게 간격을 넓히고, 프로젝트 칸·상세 페이지 버튼도 같은 크기로 */
+.case-links{display:flex;flex-wrap:wrap}
+.pbtns,.project .links,.case-links{gap:14px 16px}
+.pbtns .btn,.project .links .btn{font-size:18px;padding:10px 22px}
+@media(max-width:640px){.btn,.pbtns .btn,.project .links .btn{font-size:15px;padding:9px 16px}.pbtns,.project .links,.case-links{gap:12px 14px}}
+@media(prefers-reduced-motion:reduce){.btn,.btn::before,.nav a.nav-pr,.nav a.nav-pr::before{transition:none}.btn:hover,.btn:focus-visible,.nav a.nav-pr:hover,.nav a.nav-pr:focus-visible{transform:none}}
 /* 첫 화면: 배치 그대로, 영상 위 덮개만 테마 색으로 */
 .hero-video::after{background:linear-gradient(90deg,rgba(var(--t-hero),.86) 0%,rgba(var(--t-hero),.52) 42%,rgba(var(--t-hero),.1) 78%),linear-gradient(180deg,rgba(var(--t-hero),0) 62%,var(--t-bg) 100%)}
 @media(max-width:640px){.hero-video::after{background:linear-gradient(180deg,rgba(var(--t-hero),.25) 0%,rgba(var(--t-hero),.6) 45%,rgba(var(--t-hero),.96) 100%)}}
