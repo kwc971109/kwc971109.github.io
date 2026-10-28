@@ -74,6 +74,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{o
 /* 아주 좁은 화면(400px 이하): 이전·다음 링크를 위아래로 두어 한 줄씩 */
 @media(max-width:400px){.next-case{flex-direction:column;gap:14px}.next-case a:last-child{align-self:flex-end}}
 
+/* 진천검(震天劍): 괄호가 좁은 영어 글꼴로 나와 기울인 한글에 붙어 보이므로 한글 글꼴로 바꾸고 살짝 띄운다 */
+.hj{font-family:"Pretendard Variable",Pretendard,sans-serif;margin-left:.14em;margin-right:.04em}
+
 /* 테마별 덧칠 */
 .section-head h2{display:inline-block;padding-bottom:8px;border-bottom:3px solid #4cc8ff}
 .phead .k,.ai-card .k{border-left:3px solid #4cc8ff;clip-path:none}
