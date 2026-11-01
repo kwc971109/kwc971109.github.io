@@ -97,6 +97,26 @@ a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{o
 /* 진천검(震天劍): 괄호가 좁은 영어 글꼴로 나와 기울인 한글에 붙어 보이므로 한글 글꼴로 바꾸고 살짝 띄운다 */
 .hj{font-family:"Pretendard Variable",Pretendard,sans-serif;margin-left:.14em;margin-right:.04em}
 
+/* 메인 현업 강조(2026-11-01 사용자 확정, 레퍼런스 유형 ① '회사 로고 줄'): 첫 화면 재직 줄 + 회사·게임 로고 줄, 프로젝트 묶음 머리.
+   로고는 흰 기울인 판 위(아이덴티티게임즈 CI는 흰 바탕 권장, 드래곤네스트 로고는 흰 빛 번짐이 있어 어두운 바탕에서 뿌옇게 보임) */
+.corp-logo{position:relative;isolation:isolate;display:inline-flex;align-items:center;height:80px;padding:0 32px;flex:none}
+.corp-logo::before{content:"";position:absolute;inset:0;z-index:-1;background:#fff;transform:skewX(var(--t-btn-skew,-14deg));box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+.corp-logo img{display:block;height:42px;width:auto}
+.corp-logo.dn{padding:0 22px}
+.corp-logo.dn img{height:64px}
+.corp-logo.sm{height:66px}
+.corp-logo.sm.dn img{height:52px}
+.hero-video .corp{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:0 0 38px}
+.hero-video .who{margin-bottom:14px}
+.hero-video .career{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 30px;font-size:clamp(15px,1.5vw,18px);font-weight:600;color:var(--t-ink2)}
+.hero-video .career b{display:inline-block;background:var(--t-acc);color:var(--t-on-acc);padding:3px 14px;font-size:15px;font-weight:800}
+.pgroup{justify-content:flex-start;align-items:center;gap:22px}
+.pgroup p{margin-top:8px}
+.pcards+.pgroup{margin-top:110px}
+.timeline li.now b{font-size:18px}
+.timeline li.now span{display:block}
+@media(max-width:640px){.corp-logo{height:56px;padding:0 18px}.corp-logo img{height:24px}.corp-logo.dn{padding:0 14px}.corp-logo.dn img{height:44px}.corp-logo.sm{height:56px}.corp-logo.sm.dn img{height:44px}.hero-video .corp{gap:14px;margin-bottom:26px}.pcards+.pgroup{margin-top:72px}}
+
 /* 표: 비스듬한 줄(2026-10-28 사용자 선택 A) - 줄마다 떨어진 판, 왼쪽 이름표는 강조색 기울인 판 */
 table.t{border:0;background:transparent;border-collapse:separate;border-spacing:0 8px;border-radius:0;margin-top:10px;overflow:visible}
 table.t th,table.t td{border:0}
