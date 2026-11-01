@@ -106,6 +106,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{o
 .corp-logo.dn img{height:64px}
 .corp-logo.sm{height:66px}
 .corp-logo.sm.dn img{height:52px}
+/* 개인·팀 프로젝트 카드의 엔진 판(2026-11-01 A안): 제목 묶음 왼쪽, 모바일은 제목 위 */
+.ptitle{display:flex;align-items:center;gap:26px}
+.corp-logo.eng{height:66px;padding:0 24px;gap:12px}
+.corp-logo.eng img{height:36px}
+.corp-logo.eng b{color:#0E1128;font-weight:800;font-size:20px;letter-spacing:-.01em;white-space:nowrap}
+@media(max-width:640px){.ptitle{flex-direction:column;align-items:flex-start;gap:14px}.corp-logo.eng{height:48px;padding:0 16px;gap:8px}.corp-logo.eng img{height:24px}.corp-logo.eng b{font-size:15px}}
 .hero-video .corp{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:0 0 38px}
 .hero-video .who{margin-bottom:14px}
 .hero-video .career{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 30px;font-size:clamp(15px,1.5vw,18px);font-weight:600;color:var(--t-ink2)}
