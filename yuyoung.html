@@ -64,16 +64,16 @@
 
     <section>
       <h2>실버헌터 견제 판정 조정</h2>
-      <p><span class="sn"><span class="cl">실버헌터는 공중을 자유롭게 날아다니는,</span> <span class="cl">기동성이 유독 좋은 직업입니다.</span></span> <span class="sn"><span class="cl">그래서 콘텐츠 차원의 견제가 필요하다는 것이 파트 공통 의견이었고,</span> <span class="cl">두 패턴의 판정을 조정했습니다.</span></span></p>
+      <p><span class="sn">실버헌터는 공중 기동성으로 패턴을 무시하며 딜을 넣는 직업입니다.</span> <span class="sn"><span class="cl">패턴 높이가 낮으면 혼자만 유리하게 이득을 보기 때문에,</span> <span class="cl">위로 과하게 피하지 못하도록 견제가 필요하다는 것이 파트 공통 의견이었습니다.</span></span> <span class="sn">그래서 두 패턴의 판정을 조정했습니다.</span></p>
       <ul class="plain">
-        <li><span class="cl"><b>소드 오러 1번(유도 범위 공격)</b> 윗부분 판정을 넓혀,</span> <span class="cl">공중에 떠 있어도 피해야 하게 만들었습니다.</span></li>
+        <li><span class="cl"><b>소드 오러 1번(유도 범위 공격)</b> 윗부분 판정을 넓혀,</span> <span class="cl">위로 과하게 떠서 피하지 못하게 했습니다.</span></li>
         <li><span class="sn"><b>칼날 사이클론(에어본 연계 발사체)</b> 소용돌이와 칼날 범위를 높게 잡았습니다.</span> <span class="sn"><span class="cl">근접 직업은 비교적 피하기 쉽지만,</span> <span class="cl">원거리 직업,</span> <span class="cl">특히 실버헌터는 신경 써서 피해야 합니다.</span></span></li>
       </ul>
     </section>
 
     <section>
       <h2>프레임 단위 유도 투사체 재설계</h2>
-      <p><span class="sn"><span class="cl">기존 보스의 얼음 투사체 패턴을 개조해 만들었는데,</span> <span class="cl">첫 버전은 맞는 순간 바로 피해가 들어가고 유도 성능도 너무 좋아서 사실상 피할 수 없었습니다.</span></span> <span class="sn"><span class="cl">그래서 거의 새로 만들다시피 바꿔,</span> <span class="cl">검이 플레이어가 직전에 있던 바닥에 꽂히고 1초 뒤 터지게 했습니다.</span></span> <span class="sn">타이밍은 보스 모션으로 알려 줍니다.</span></p>
+      <p><span class="sn">기존 보스의 발사체 패턴을 개조해 만들었습니다.</span> <span class="sn"><span class="cl">원래는 플레이어에게 정확히 날아가고,</span> <span class="cl">몇 초 뒤 폭발할 때 범위 피해를 주는 발사체입니다.</span></span> <span class="sn"><span class="cl">그런데 날아가 맞는 순간에도 피해를 넣자 유도 성능이 너무 좋아,</span> <span class="cl">플레이어가 무조건 맞았습니다.</span></span> <span class="sn"><span class="cl">그래서 거의 새로 만들다시피 바꿔,</span> <span class="cl">검이 플레이어가 직전에 있던 바닥에 꽂히고 1초 뒤 터지게 했습니다.</span></span> <span class="sn">타이밍은 보스 모션으로 알려 줍니다.</span></p>
       <p><span class="cl">공중에서 조준한 뒤 다시 유도 투사체를 쏘는 구조라,</span> <span class="cl">프레임을 맞추는 시그널(언리얼로 치면 블루프린트 노드 하나)을 1프레임 단위로 맞춰 조준이 튀는 문제도 잡았습니다.</span></p>
       <figure class="clip"><video id="yy-clip" src="assets/media/yy-p8-sword.mp4?v=2" poster="assets/img/yy/yy-p8-sword-poster.jpg?v=2" autoplay muted loop playsinline controls preload="auto" width="804" height="406" aria-label="유도 검 패턴 반복 영상. 붉은 조준선이 플레이어를 따라가다, 검 두 자루가 꽂힌 자리가 차례로 터진다"></video><figcaption>유도 검 패턴 (5.1초&nbsp;반복) · 붉은 조준선이 플레이어를 따라가다, 검이 꽂힌 자리가 1초 뒤 터집니다. 테스트 영상에서 화면 UI 일부를 지웠습니다.</figcaption></figure>
     </section>
