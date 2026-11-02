@@ -106,6 +106,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{o
 .corp-logo.dn img{height:64px}
 .corp-logo.sm{height:66px}
 .corp-logo.sm.dn img{height:52px}
+/* 드래곤네스트 작업 페이지 머리의 게임 로고 판(2026-11-02): 제목 바로 위 */
+.game-logo{display:flex;margin:6px 0 22px}
+.case-hero .game-logo{margin:2px 0 18px}
+.text-hero .game-logo{margin:16px 0 0}
+.text-hero .game-logo+h1{margin-top:20px}
+.case-hero .game-logo .corp-logo::before{box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink)),0 6px 22px rgba(0,0,0,.35)}
 /* 개인·팀 프로젝트 카드의 엔진 판(2026-11-01 A안): 제목 묶음 왼쪽, 모바일은 제목 위 */
 .ptitle{display:flex;align-items:center;gap:26px}
 .corp-logo.eng{height:66px;padding:0 24px;gap:12px}
