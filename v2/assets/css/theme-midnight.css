@@ -1,0 +1,132 @@
+/* Midnight 테마 (Hallmark 'Midnight', 2026-10-28 사용자 선택) — 배치는 그대로 두고 색·글꼴·면·버튼만 바꾼다.
+   style.css 다음에 읽는다. 게임 화면·영상은 작업물이라 원래 색 그대로 둔다(테마의 사진 이중톤은 쓰지 않음).
+   색을 바꾸려면 아래 :root 값만 고치면 된다(Midnight 원본 oklch 값을 화면용 색으로 옮긴 것). */
+:root{
+  --bg:#02071d; --surface:#071129; --surface-2:#0f1c37;
+  --ink:#e7f0f9; --ink-2:#bddcf7; --muted:#98a9c1; --line:#1c2a48; --line-2:#364868;
+  --accent:#6bcbf7; --accent-ink:#bddcf7; --accent-soft:#0f1c37; --on-accent:#040c22; --focus:#6bdaff;
+  --level:#bddcf7; --combat:#bddcf7;
+  --radius:0px;
+  --font:"Mona Sans","Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --shadow-card:0 24px 48px -24px rgba(0,0,7,.7);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--ink)}
+::selection{background:var(--accent);color:var(--on-accent)}
+
+/* 글꼴: 큰 제목은 넓고 얇게(영문 Mona Sans 125%·300, 한글은 Pretendard 300), 항목 제목은 500 */
+h1,h2,.hero-video h1,.case-hero h1,.hero h1,.text-hero h1,.case h2,.section-head h2{font-weight:300;font-stretch:125%;letter-spacing:-.015em}
+.hero-video h1{letter-spacing:-.02em;line-height:1.12}
+h3,.phead h3,.pcard h3,.ai-card h3,.ai-feature h3,.pillar h3,.case h3{font-weight:500;letter-spacing:-.01em}
+b,strong{font-weight:600}
+.brand b{font-weight:600}
+/* 이름표·작은 글: 500, 흐린 색 */
+.brand span,.pcard .k,.phead .k,.ai-card .k,.ai-feature .k,.ai-sub .k,.pillar .k,.case .pillars .pillar .k,.zone .k,.device .k,.pick .k,.callout .k,.facts b,.qa b,.spec dt,table.t thead th,.doclist em,.about h3{font-weight:500;color:var(--muted)}
+/* 숫자 칸: 넓고 얇은 숫자 */
+.stats b{font-weight:300;font-stretch:125%;letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* 머리글: 유리 효과 없이 바탕색 그대로 */
+.site-header{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom-color:var(--line)}
+.nav a{color:var(--ink-2)}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--ink)}
+.nav a.nav-pr,.nav a.nav-pr:hover{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.nav a.nav-pr:hover{background:var(--surface)}
+
+/* 버튼: 주 버튼은 하늘색 사각, 보조는 선 사각 */
+.btn{font-weight:500}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:var(--focus);border-color:var(--focus);color:var(--on-accent)}
+.btn-ghost{background:transparent;border-color:var(--line-2);color:var(--ink)}
+.btn-ghost:hover{background:var(--surface)}
+.chip,.chip.level,.chip.combat,.chip.data{background:transparent;border-color:var(--line-2);color:var(--ink-2)}
+.chip.live{background:var(--surface-2);border-color:var(--surface-2);color:var(--ink)}
+
+/* 면: 테두리 없이 밝기 단계로 */
+.ai-card,.ai-feature,.ai-sub,.card,.callout,.device,.facts>div,.pick,.pillar,.proof li,.qa>div,.qcard,.spec,.strength,.zone,.loop div{border-color:transparent;background:var(--surface)}
+.stats li{border-color:transparent;background:var(--surface-2)}
+.ai-feature:hover,.ai-sub:hover,.pick:hover{border-color:transparent;background:var(--surface-2)}
+.qa .a{border-color:transparent;background:var(--surface-2);color:var(--ink)}
+.qa .a b{color:var(--ink)}
+details.more>div{background:var(--surface)}
+details.more summary{color:var(--ink-2)}
+.flow li span{border-color:var(--line-2);background:transparent}
+.flow li.hl span{border-color:var(--ink-2);color:var(--ink)}
+.flow li+li::before{color:var(--muted)}
+.g-main,.pcard .banner{border-color:transparent}
+.g-thumb[aria-pressed="true"]{border-color:var(--accent)}
+.pcard .banner:hover img{transform:none}
+table.t thead th{background:var(--surface-2)}
+.iter li.drop::before{background:var(--line-2)}
+.doclist a{border-color:transparent;background:var(--surface)}
+.doclist a:hover{border-color:transparent;background:var(--surface-2)}
+figure img,.g-main{outline:1px solid rgba(231,240,249,.08);outline-offset:-1px}
+
+/* 사진 위 덮개: 검정 대신 바탕의 남색으로 */
+.hero-video{background:var(--bg)}
+.hero-video::after{background:linear-gradient(90deg,rgba(2,7,29,.82) 0%,rgba(2,7,29,.5) 42%,rgba(2,7,29,.1) 78%),linear-gradient(180deg,rgba(2,7,29,0) 62%,var(--bg) 100%)}
+@media(max-width:640px){.hero-video::after{background:linear-gradient(180deg,rgba(2,7,29,.25) 0%,rgba(2,7,29,.55) 45%,rgba(2,7,29,.96) 100%)}}
+.case-hero{background:var(--bg)}
+.case-hero .cap{background:linear-gradient(180deg,transparent,rgba(2,7,29,.82))}
+.text-hero{background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);border-bottom-color:var(--line)}
+.qmedia,.project .media,.pcard .banner,.ai-card .ai-media{background:var(--surface)}
+.ai-card .ai-media.doc,.ai-feature .af-media{background:#fff}
+
+/* 링크·바닥글 */
+a:hover{text-decoration-color:var(--accent)}
+.site-footer{background:var(--surface);border-top-color:var(--line)}
+.site-footer a{color:var(--ink-2)}
+.site-footer small{color:var(--muted)}
+
+/* 그래프 설명 상자·포커스 */
+.pacing-tip{background:var(--surface-2);color:var(--ink);border-color:var(--line-2);box-shadow:var(--shadow-card)}
+a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible,.table-scroll:focus-visible,.chart-scroll:focus-visible{outline:3px solid var(--focus);outline-offset:2px;box-shadow:0 0 0 6px var(--bg)}
+.skip-link{border-color:var(--accent)}
+
+/* 굵기는 300·400·500·600만: 첫 화면 이름 줄과 이전·다음 링크를 500으로 */
+.hero-video .who,.next-case{font-weight:500}
+/* 아주 좁은 화면(400px 이하): 이전·다음 링크를 위아래로 두어 한 줄씩 */
+@media(max-width:400px){.next-case{flex-direction:column;gap:14px}.next-case a:last-child{align-self:flex-end}}
+
+/* 모서리: 원(50%)은 그대로 두고 나머지는 모두 각지게 */
+.ai-card,
+.ai-card .ai-media,
+.ai-feature,
+.ai-sub,
+.btn,
+.callout,
+.card,
+.case figure.clip video,
+.chart-scroll,
+.chip,
+.device,
+.dist .bar,
+.doclist a,
+.doclist em,
+.facts>div,
+.flow li span,
+.g-main,
+.g-thumb,
+.legend i,
+.loop div,
+.nav a.nav-pr,
+.pacing-tip,
+.pcard .banner,
+.pcard .go,
+.pcard .thumbs img,
+.pick,
+.pillar,
+.project .media,
+.proof li,
+.qa>div,
+.qcard,
+.skip-link,
+.spec,
+.stats li,
+.strength,
+.th-media img,
+.todo,
+.todo-inline,
+.video,
+.zone,
+details.more>div,
+figure img,
+table.t{border-radius:0}

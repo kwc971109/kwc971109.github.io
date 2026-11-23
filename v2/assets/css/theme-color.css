@@ -1,0 +1,153 @@
+/* 남색·하늘색(차분한 게임 메뉴 느낌) 색 테마 값 — 배치는 그대로 */
+:root{
+  --t-bg:#06122e; --t-band:#0b1c45; --t-card:#0b1c45; --t-ink:#ffffff; --t-ink2:#dbe6f7; --t-muted:#a9bfe3; --t-line:#22407e;
+  --t-acc:#4cc8ff; --t-acc-ink:#8fdcff; --t-on-acc:#06122e; --t-acc-hover:#ffffff; --t-shadow:10px 10px 0 rgba(31,111,255,.45); --t-frame:1px solid rgba(76,200,255,.55);
+  --t-hero:6,18,46;
+  --t-header:rgba(6,18,46,.96); --t-header-line:1px solid rgba(76,200,255,.45);
+  --t-btn-bg:#163a80; --t-btn-bg-hover:#2453b3; --t-btn-ink:#ffffff; --t-btn-back:#081538; --t-btn-acc-back:#1f5fe0; --t-btn-skew:-14deg;
+  --t-tag-bg:rgba(76,200,255,.14); --t-tag-ink:#8fdcff;
+  --t-ai-bg:#0b1c45; --t-about-bg:#0b1c45; --t-footer:#040c20; --t-focus:#ffffff;
+  --t-row:rgba(18,43,99,.75); --t-row-hover:#122b63;
+  --t-display:"Barlow Condensed","Pretendard Variable",Pretendard,sans-serif; --t-display-style:italic; --t-display-weight:800;
+}
+/* 색 테마 공통(2026-10-28): 배치는 그대로 두고 색·글꼴·버튼·카드 모양만 바꾼다. 각 테마 파일이 아래 변수를 채운다.
+   --t-bg 바탕, --t-band 띠 바탕, --t-card 카드, --t-ink 글자, --t-ink2 보조 글자, --t-muted 흐린 글자, --t-line 선,
+   --t-acc 강조(채움), --t-acc-ink 강조 글자, --t-on-acc 강조 위 글자, --t-shadow 카드 그림자, --t-hero 첫 화면 덮개 색(rgb 숫자),
+   --t-display 큰 제목 글꼴, --t-display-style 기울임, --t-display-weight 굵기 */
+:root{
+  --bg:var(--t-bg); --surface:var(--t-card); --surface-2:var(--t-band); --ink:var(--t-ink); --ink-2:var(--t-ink2); --muted:var(--t-muted); --line:var(--t-line);
+  --accent:var(--t-acc); --accent-ink:var(--t-acc-ink); --accent-soft:var(--t-band); --on-accent:var(--t-on-acc); --level:var(--t-acc-ink); --combat:var(--t-acc-ink);
+}
+body{background:var(--t-bg);color:var(--t-ink)}
+::selection{background:var(--t-acc);color:var(--t-on-acc)}
+.site-header{background:var(--t-header,var(--t-bg));-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:var(--t-header-line,1px solid var(--t-line))}
+.brand b{color:var(--t-brand,var(--t-ink))}
+.brand span{color:var(--t-acc-ink)}
+.nav a{color:var(--t-nav,var(--t-ink2))}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--t-acc-ink)}
+.nav a.nav-pr,.nav a.nav-pr:hover{background:transparent;color:var(--t-on-acc);border-radius:0;clip-path:none;padding:6px 16px;position:relative;isolation:isolate;transition:transform .12s ease}
+/* 메뉴의 PR 문서 버튼도 아래 버튼과 같은 두 겹 막대(작게) */
+.nav a.nav-pr::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(var(--t-btn-skew,-14deg));background:var(--t-acc);box-shadow:4px 4px 0 var(--t-btn-acc-back,var(--t-acc-ink));transition:background .12s ease,box-shadow .12s ease}
+.nav a.nav-pr:hover,.nav a.nav-pr:focus-visible{transform:translate(-1px,-1px)}
+.nav a.nav-pr:hover::before,.nav a.nav-pr:focus-visible::before{background:var(--t-acc-hover,var(--t-acc));box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+h1,h2,.phead h3,.pcard h3,.case-hero h1,.text-hero h1,.case h2,.section-head h2{font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:var(--t-display-weight,800)}
+.hero-video h1 em{font-style:inherit}
+/* 버튼: 두 겹 막대(2026-10-28 사용자 선택 B). 버튼을 잘라 내지 않고 뒤에 기울인 막대(::before)를 깔고, 막대 뒤에 진한 색 한 겹(그림자)을 둔다.
+   마우스를 올리면(사용자 선택 1안 '떠오름') 살짝 떠오르며 뒤 한 겹이 길어지고, 강조 버튼은 흰색·보조 버튼은 밝은 파랑이 된다. 키보드로 고를 때도 같다.
+   값: --t-btn-bg 보조 막대, --t-btn-bg-hover 보조 막대(올림), --t-btn-ink 보조 글자, --t-btn-back 보조 뒤 한 겹,
+       --t-acc 강조 막대, --t-acc-hover 강조 막대(올림), --t-btn-acc-back 강조 뒤 한 겹, --t-btn-skew 기울기 */
+.btn{border-radius:0;border-color:transparent;background:transparent;clip-path:none;position:relative;isolation:isolate;font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:800;font-size:18px;padding:10px 24px;transition:transform .12s ease}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:skewX(var(--t-btn-skew,-14deg));background:var(--t-btn-bg,var(--t-band));box-shadow:6px 6px 0 var(--t-btn-back,rgba(0,0,0,.35));transition:background .12s ease,box-shadow .12s ease}
+.btn-ghost{color:var(--t-btn-ink,var(--t-ink))}
+.btn-primary{color:var(--t-on-acc)}
+.btn-primary::before{background:var(--t-acc);box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+.btn:hover,.btn:focus-visible{background:transparent;transform:translate(-2px,-2px)}
+.btn:hover::before,.btn:focus-visible::before{box-shadow:9px 9px 0 var(--t-btn-back,rgba(0,0,0,.35))}
+.btn-ghost:hover,.btn-ghost:focus-visible{background:transparent;color:var(--t-btn-ink,var(--t-ink))}
+.btn-ghost:hover::before,.btn-ghost:focus-visible::before{background:var(--t-btn-bg-hover,var(--t-card))}
+.btn-primary:hover,.btn-primary:focus-visible{background:transparent;color:var(--t-on-acc)}
+.btn-primary:hover::before,.btn-primary:focus-visible::before{background:var(--t-acc-hover,var(--t-acc));box-shadow:9px 9px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+/* 버튼 묶음: 뒤 한 겹이 옆 버튼에 닿지 않게 간격을 넓히고, 프로젝트 칸·상세 페이지 버튼도 같은 크기로 */
+.case-links{display:flex;flex-wrap:wrap}
+.pbtns,.project .links,.case-links{gap:14px 16px}
+.pbtns .btn,.project .links .btn{font-size:18px;padding:10px 22px}
+@media(max-width:640px){.btn,.pbtns .btn,.project .links .btn{font-size:15px;padding:9px 16px}.pbtns,.project .links,.case-links{gap:12px 14px}}
+@media(prefers-reduced-motion:reduce){.btn,.btn::before,.nav a.nav-pr,.nav a.nav-pr::before{transition:none}.btn:hover,.btn:focus-visible,.nav a.nav-pr:hover,.nav a.nav-pr:focus-visible{transform:none}}
+/* 첫 화면: 배치 그대로, 영상 위 덮개만 테마 색으로 */
+.hero-video::after{background:linear-gradient(90deg,rgba(var(--t-hero),.86) 0%,rgba(var(--t-hero),.52) 42%,rgba(var(--t-hero),.1) 78%),linear-gradient(180deg,rgba(var(--t-hero),0) 62%,var(--t-bg) 100%)}
+@media(max-width:640px){.hero-video::after{background:linear-gradient(180deg,rgba(var(--t-hero),.25) 0%,rgba(var(--t-hero),.6) 45%,rgba(var(--t-hero),.96) 100%)}}
+.hero-video h1{color:var(--t-hero-h1,#fff);text-shadow:var(--t-hero-shadow,none)}
+.hero-video .who{color:var(--t-hero-who,#fff);border-left:6px solid var(--t-acc);padding-left:12px}
+/* 프로젝트 칸·카드: 각진 모서리, 테마 그림자 */
+.g-main,.ai-card,.ai-card .ai-media,.stats li,.doclist a,.doclist em,.chip,.facts>div,.qa>div,.spec,.pillar,.card,.zone,.device,.callout,figure img,.g-thumb,details.more>div,.pick,.flow li span,table.t{border-radius:0}
+.g-main{border:var(--t-frame,2px solid var(--t-line));box-shadow:var(--t-shadow)}
+.g-thumb[aria-pressed="true"]{border-color:var(--t-acc)}
+.phead .k,.ai-card .k{display:inline-block;background:var(--t-tag-bg,var(--t-acc));color:var(--t-tag-ink,var(--t-on-acc));padding:3px 12px;clip-path:polygon(0 0,100% 0,94% 100%,0 100%)}
+.phead h3 a{color:var(--t-ink)}
+.phead h3 a:hover{color:var(--t-acc-ink)}
+.ai-card{background:var(--t-card);border:var(--t-frame,2px solid var(--t-line));box-shadow:var(--t-shadow)}
+.stats li{background:var(--t-band);border-color:transparent}
+.stats b{color:var(--t-stat,var(--t-ink));font-family:var(--t-display);font-style:var(--t-display-style,normal)}
+.doclist a{background:var(--t-card);border:var(--t-frame,2px solid var(--t-line))}
+.doclist a:hover{background:var(--t-band)}
+.doclist em{background:var(--t-acc);color:var(--t-on-acc)}
+.doclist a span::after{content:"";display:inline-block;width:.72em;height:.72em;margin-left:.4em;vertical-align:-.04em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat}
+.chip{border:1px solid var(--t-line);color:var(--t-ink2);background:transparent}
+.about h3{color:var(--t-acc-ink)}
+#ai{background:var(--t-ai-bg,var(--t-bg))}
+#docs{background:var(--t-docs-bg,var(--t-bg))}
+#about{background:var(--t-about-bg,var(--t-bg))}
+.site-footer{background:var(--t-footer,var(--t-band));border-top:1px solid var(--t-line)}
+.site-footer,.site-footer h2{color:var(--t-footer-ink,var(--t-ink))}
+.site-footer a{color:var(--t-footer-link,var(--t-acc-ink))}
+.site-footer small{color:var(--t-footer-small,var(--t-muted))}
+a:focus-visible,button:focus-visible,summary:focus-visible,video:focus-visible{outline:3px solid var(--t-focus,var(--t-acc));outline-offset:2px;box-shadow:0 0 0 6px var(--t-bg)}
+
+/* 상세 페이지: 예전 검정 기준으로 남아 있던 색을 테마 색으로 */
+.text-hero{background:linear-gradient(180deg,var(--t-band) 0%,var(--t-bg) 100%);border-bottom-color:var(--t-line)}
+.case-hero{background:var(--t-bg)}
+.case-hero .cap{background:linear-gradient(180deg,transparent,rgba(var(--t-hero),.84))}
+.qmedia,.project .media{background:var(--t-band)}
+.pacing-tip{background:var(--t-band);color:var(--t-ink);border:1px solid var(--t-acc);border-radius:0}
+.iter li.drop::before{background:var(--t-line)}
+.chart-scroll{border-radius:0}
+/* 아주 좁은 화면(400px 이하): 이전·다음 링크를 위아래로 두어 한 줄씩 */
+@media(max-width:400px){.next-case{flex-direction:column;gap:14px}.next-case a:last-child{align-self:flex-end}}
+
+/* 진천검(震天劍): 괄호가 좁은 영어 글꼴로 나와 기울인 한글에 붙어 보이므로 한글 글꼴로 바꾸고 살짝 띄운다 */
+.hj{font-family:"Pretendard Variable",Pretendard,sans-serif;margin-left:.14em;margin-right:.04em}
+
+/* 메인 현업 강조(2026-11-01 사용자 확정, 레퍼런스 유형 ① '회사 로고 줄'): 첫 화면 재직 줄 + 회사·게임 로고 줄, 프로젝트 묶음 머리.
+   로고는 흰 기울인 판 위(아이덴티티게임즈 CI는 흰 바탕 권장, 드래곤네스트 로고는 흰 빛 번짐이 있어 어두운 바탕에서 뿌옇게 보임) */
+.corp-logo{position:relative;isolation:isolate;display:inline-flex;align-items:center;height:80px;padding:0 32px;flex:none}
+.corp-logo::before{content:"";position:absolute;inset:0;z-index:-1;background:#fff;transform:skewX(var(--t-btn-skew,-14deg));box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink))}
+.corp-logo img{display:block;height:42px;width:auto}
+.corp-logo.dn{padding:0 22px}
+.corp-logo.dn img{height:64px}
+.corp-logo.sm{height:66px}
+.corp-logo.sm.dn img{height:52px}
+/* 드래곤네스트 작업 페이지 머리의 게임 로고 판(2026-11-02): 제목 바로 위 */
+.game-logo{display:flex;margin:6px 0 22px}
+.case-hero .game-logo{margin:2px 0 18px}
+.text-hero .game-logo{margin:16px 0 0}
+.text-hero .game-logo+h1{margin-top:20px}
+.case-hero .game-logo .corp-logo::before{box-shadow:6px 6px 0 var(--t-btn-acc-back,var(--t-acc-ink)),0 6px 22px rgba(0,0,0,.35)}
+/* 개인·팀 프로젝트 카드의 엔진 판(2026-11-01 A안): 제목 묶음 왼쪽, 모바일은 제목 위 */
+.ptitle{display:flex;align-items:center;gap:26px}
+.corp-logo.eng{height:66px;padding:0 24px;gap:12px}
+.corp-logo.eng img{height:36px}
+.corp-logo.eng b{color:#0E1128;font-weight:800;font-size:20px;letter-spacing:-.01em;white-space:nowrap}
+@media(max-width:640px){.ptitle{flex-direction:column;align-items:flex-start;gap:14px}.corp-logo.eng{height:48px;padding:0 16px;gap:8px}.corp-logo.eng img{height:24px}.corp-logo.eng b{font-size:15px}}
+.hero-video .corp{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:0 0 38px}
+.hero-video .who{margin-bottom:14px}
+.hero-video .career{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 30px;font-size:clamp(15px,1.5vw,18px);font-weight:600;color:var(--t-ink2)}
+.hero-video .career b{display:inline-block;background:var(--t-acc);color:var(--t-on-acc);padding:3px 14px;font-size:15px;font-weight:800}
+.pgroup{justify-content:flex-start;align-items:center;gap:22px}
+.pgroup p{margin-top:8px}
+.pcards+.pgroup{margin-top:110px}
+.timeline li.now b{font-size:18px}
+.timeline li.now span{display:block}
+@media(max-width:640px){.corp-logo{height:56px;padding:0 18px}.corp-logo img{height:24px}.corp-logo.dn{padding:0 14px}.corp-logo.dn img{height:44px}.corp-logo.sm{height:56px}.corp-logo.sm.dn img{height:44px}.hero-video .corp{gap:14px;margin-bottom:26px}.pcards+.pgroup{margin-top:72px}}
+
+/* 표: 비스듬한 줄(2026-10-28 사용자 선택 A) - 줄마다 떨어진 판, 왼쪽 이름표는 강조색 기울인 판 */
+table.t{border:0;background:transparent;border-collapse:separate;border-spacing:0 8px;border-radius:0;margin-top:10px;overflow:visible}
+table.t th,table.t td{border:0}
+table.t td{background:var(--t-row,var(--t-band));padding:14px 20px}
+table.t tr:hover td:not(.k){background:var(--t-row-hover,var(--t-card))}
+table.t td.k{background:var(--t-acc);color:var(--t-on-acc);font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:800;font-size:17px;min-width:150px;padding-right:36px;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+table.t thead th{background:transparent;padding:4px 20px 2px;font-size:16px;letter-spacing:0;color:var(--t-muted);font-family:var(--t-display);font-style:var(--t-display-style,normal);font-weight:800}
+table.t thead th:last-child{color:var(--t-acc-ink)}
+table.t:not(:has(td.k)) tbody td+td{box-shadow:inset 3px 0 0 var(--t-acc)}
+table.t td small{color:var(--t-muted)}
+@media(max-width:640px){
+  table.t:has(td.k),table.t:has(td.k) tbody,table.t:has(td.k) tr{display:block}
+  table.t:has(td.k) tr{margin-bottom:10px;background:var(--t-row,var(--t-band))}
+  table.t:has(td.k) td{display:block;background:transparent;padding:10px 14px 12px}
+  table.t:has(td.k) tr:hover td:not(.k){background:transparent}
+  table.t:has(td.k) td.k{display:inline-block;width:auto;min-width:0;white-space:normal;font-size:16px;padding:6px 30px 6px 12px;background:var(--t-acc)}
+}
+
+/* 테마별 덧칠 */
+.section-head h2{display:inline-block;padding-bottom:8px;border-bottom:3px solid #4cc8ff}
+.phead .k,.ai-card .k{border-left:3px solid #4cc8ff;clip-path:none}
+.stats li{background:#122b63}
