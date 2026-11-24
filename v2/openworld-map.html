@@ -1,0 +1,354 @@
+<title>용이 잠드는 땅 · 루트 지도</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@800&display=swap">
+<style>
+/* Layout: one dark atlas sheet — title, controls, the bubble map, then the list of every place */
+:root {
+  color-scheme: dark;
+  --bg:#14120e; --panel:#1d1a15; --line:#3a352c; --ink:#ece6da; --muted:#a39a8b;
+  --accent:#e6c04f; --btn:#2a261f; --btn-edge:#7a705f; --tip:#0d0c09f0;
+  --font-display:"Nanum Myeongjo","Batang","AppleMyungjo",serif;
+  --font-body:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+}
+* { box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font:15px/1.6 var(--font-body);
+       padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width:1180px; margin:0 auto; padding-block:24px 48px; display:grid; gap:14px; }
+main > * { min-width:0; }
+header { display:grid; gap:6px; }
+h1 { font-family:var(--font-display); font-weight:800; font-size:clamp(22px, 4.2vw, 30px); line-height:1.3; margin:0; text-wrap:balance; }
+.sub { color:var(--muted); margin:0; max-width:70ch; }
+.bar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.btn { background:var(--btn); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 12px; font:inherit; font-size:14px; cursor:pointer; }
+.btn:hover { border-color:var(--btn-edge); }
+.btn:disabled { opacity:0.4; cursor:default; }
+.btn:focus-visible, svg [tabindex]:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.stage { position:relative; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+svg { display:block; width:100%; height:auto; user-select:none; -webkit-user-select:none; }
+.tip { position:absolute; pointer-events:none; max-width:min(300px, 80%); background:var(--tip); border:1px solid var(--line);
+       border-radius:8px; padding:8px 10px; font-size:13px; line-height:1.5; }
+.tip b { display:block; font-size:14px; }
+.tip .m { color:var(--muted); }
+section { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; min-width:0; }
+h2 { font-size:17px; margin:0 0 8px; }
+ul { margin:0; padding-left:20px; }
+.tree ul { padding-left:22px; }
+.tree li { margin:2px 0; }
+.tree .g { font-weight:700; }
+.tree .m { color:var(--muted); font-size:13px; }
+.dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+body.static { padding:0; }
+.static header, .static .bar, .static section { display:none; }
+.static main { padding:0; max-width:none; }
+.static .stage { border:none; border-radius:0; }
+.hint{margin:14px 0 4px;padding:12px 16px;border-radius:10px;background:var(--accent);color:#14120e;font-weight:800;font-size:18px;text-align:center}
+</style>
+
+<main>
+<header>
+  <h1>용이 잠드는 땅 · 루트 지도</h1>
+  <p class="sub">장소와 길을 그린 개략도예요. 점선 고리가 있는 큰 원은 지역 묶음이에요. "← 이전으로"(Esc)로 되돌리고, 원 위에 마우스를 올리면 설명이 나와요. 위치와 거리는 실제와 다를 수 있어요.</p>
+</header>
+<p class="hint">원을 눌러 보세요 · 지역 안의 루트가 펼쳐집니다</p>
+<div class="bar">
+  <button class="btn" id="b-back" type="button" disabled>← 이전으로</button>
+  <button class="btn" id="b-default" type="button">기본 보기</button>
+  <button class="btn" id="b-all" type="button">모두 펼치기</button>
+  <button class="btn" id="b-none" type="button">모두 접기</button>
+</div>
+<div class="stage" id="stage">
+  <svg id="map" viewBox="0 0 1264 1472" role="img" aria-label="용이 잠드는 땅 루트 버블 지도"></svg>
+  <div class="tip" id="tip" hidden></div>
+</div>
+
+<section>
+<h2>장소 목록</h2>
+<div class="tree" id="tree"></div>
+</section>
+</main>
+
+<script>
+const STYLE = {hub:{fill:'#e6c04f', icon:'⬡'}, place:{fill:'#7fa8c6', icon:'◯'}, goal:{fill:'#cf5b48', icon:'✚'}, danger:{fill:'#e08a3b', icon:'⚠'}};
+// groups: folded bubble at (cx, cy) with radius cr; size = rough world extent in m
+const G = [{"id":"world","parent":null,"name":"월드"},{"id":"begin","parent":"world","name":"시작","note":"인트로·첫 부락","color":"#e6c04f","size":200,"cx":560,"cy":1340,"cr":85,"d":"구름 위에서 깨어나 해변 캠프에 내리고, 첫 부락의 봉인 철문을 열면 세 갈래 길이 나와요."},{"id":"desert","parent":"world","name":"결정화 사막","note":"왼쪽 길","color":"#cdb98a","size":600,"cx":230,"cy":870,"cr":115,"d":"땅 위 가시 산 미로에서 모래 구덩이로 떨어져 지하로 내려가요. 지하 공동에 보스 모래 벌레가 있어요."},{"id":"range","parent":"world","name":"참룡산맥","note":"가운데 길","color":"#c7a98a","size":800,"cx":640,"cy":790,"cr":150,"d":"검이 꽂힌 용의 뼈를 따라 오르고, 검 앞 지하 동굴을 지나 보스 광장과 지하 성당에 닿아요."},{"id":"forest","parent":"world","name":"비통한 숲","note":"이번 범위 제외","color":"#86b48c","size":500,"cx":1050,"cy":870,"cr":115,"d":"이번 범위에서 뺐어요. 들어가는 길만 표시했어요."}];
+const N = [{"id":"intro","parent":"begin","t":"place","name":"인트로","note":"해변 캠프","size":40,"x":470,"y":1400,"d":"구름 위에서 깨어나 위습을 따라 낙하하고, 위습을 잡고 활공해 해변 캠프에 내려요. 약 40초 안에 이동과 활공 조작을 익혀요."},{"id":"village","parent":"begin","t":"place","name":"첫 부락","note":"무리·스위치·철문","size":50,"x":650,"y":1295,"d":"몹 무리 셋 → 스위치 셋 → 봉인 철문. 전투와 탐험의 기본 흐름을 짧게 반복해요."},{"id":"fork","parent":"world","t":"hub","name":"세 갈래","note":"세 길 모두 열림","size":60,"x":640,"y":1140,"d":"철문을 열면 세 지역이 한눈에 보여요. 왼쪽 결정화 사막, 가운데 참룡산맥, 오른쪽 비통한 숲이고 순서는 플레이어가 골라요."},{"id":"dmaze","parent":"desert","t":"place","name":"가시 산 미로","note":"땅 위","size":50,"x":320,"y":1010,"d":"가시 산은 미끄러워 오를 수 없고 눈부심 때문에 활공도 짧아요. 미로를 걸어서 풀어요."},{"id":"dpit","parent":"desert","t":"place","name":"모래 구덩이","note":"지하로","size":30,"x":170,"y":960,"d":"모래 구덩이로 떨어지면 사막 지하로 내려가요."},{"id":"dunder","parent":"desert","t":"hub","name":"사막 지하","note":"위·아래 시작점","size":40,"x":260,"y":845,"d":"지하 두 층의 시작점이에요. 성당의 메아리 문에서 지하 터널로도 들어와요."},{"id":"worm","parent":"desert","t":"danger","name":"모래 벌레 공동","note":"보스","size":50,"x":160,"y":745,"d":"지하 공동에서 보스 모래 벌레와 싸워요."},{"id":"dreward","parent":"desert","t":"goal","name":"보상방","note":"불의 원석","size":30,"x":300,"y":690,"d":"보스를 쓰러뜨리고 불의 원석을 얻어요. 순간이동 장치로 땅 위 입구나 성당 근처 터널로 돌아가요."},{"id":"rib","parent":"range","t":"place","name":"갈비뼈 쉼터","size":30,"x":640,"y":1030,"d":"세 갈래 가운데 길 끝, 갈비뼈 아래 쉼터예요."},{"id":"wlift","parent":"range","t":"place","name":"나무 승강대","size":25,"x":640,"y":945,"d":"평형추 밧줄 둘을 풀어 움직이는 나무 승강대예요."},{"id":"guard","parent":"range","t":"place","name":"검의 코등이","note":"활공 금지","size":40,"x":580,"y":860,"d":"거대한 검의 코등이. 바람이 세서 활공할 수 없어요. 엔딩 뒤에는 여기서 어디로든 활공할 수 있어요."},{"id":"blift","parent":"range","t":"place","name":"뼈 승강기","size":25,"x":710,"y":790,"d":"뼈 승강기를 타고 검 앞 지하 동굴로 가요."},{"id":"cave","parent":"range","t":"place","name":"검 앞 지하 동굴","size":30,"x":600,"y":705,"d":"검 앞 지하 동굴을 지나 보스 광장으로 나가요."},{"id":"plaza","parent":"range","t":"danger","name":"보스 광장","note":"보스","size":40,"x":700,"y":625,"d":"성당에 닿기 직전 광장에서 보스와 싸워요."},{"id":"cathedral","parent":"range","t":"hub","name":"지하 성당","note":"용의 피","size":50,"x":640,"y":530,"d":"용의 피를 얻는 곳이자 지하 길의 중심이에요. 서쪽 메아리 문은 사막 지하로, 동쪽 동굴은 비통한 숲 깊은 곳으로 이어져요."},{"id":"fgate","parent":"forest","t":"place","name":"늪 입구","note":"용의 피 필요","size":40,"x":1000,"y":960,"d":"세 갈래 오른쪽 땅 위 길로 늪 입구까지 와요. 용의 피가 있어야 지나가요."},{"id":"fdeep","parent":"forest","t":"place","name":"숲 깊은 곳","size":40,"x":1090,"y":770,"d":"성당 동쪽 동굴로 이어지는 숲 깊은 곳이에요."},{"id":"mouth","parent":"world","t":"place","name":"용의 입","note":"안개","size":40,"x":640,"y":365,"d":"세 지역의 재물 셋을 성당에 바쳐 문이 열리면, 용의 입에서 안개가 걷혀요."},{"id":"fortress","parent":"world","t":"goal","name":"참룡성채","note":"엔딩 (예정)","size":70,"x":640,"y":190,"d":"안개가 걷히며 참룡성채가 모습을 드러내고 끝나요(예정)."}];
+const E = [["intro","village","walk","활공해 착지",545,1385],["village","fork","walk","봉인 철문",705,1225],["fork","dmaze","walk","왼쪽 길",470,1105],["fork","rib","walk","가운데 길",700,1090],["fork","fgate","walk","오른쪽 길 (늪 입구 앞까지)",850,1100],["dmaze","dpit","walk"],["dpit","dunder","walk","떨어짐",170,895],["dunder","worm","walk"],["worm","dreward","walk"],["dreward","dmaze","glide","순간이동 (땅 위 입구)",395,880,410,860],["dreward","cathedral","glide","순간이동 (성당 근처 터널)",470,640,470,600],["rib","wlift","walk"],["wlift","guard","lift","나무 승강대",555,915],["guard","blift","walk"],["blift","cave","lift","뼈 승강기",735,735],["cave","plaza","walk"],["plaza","cathedral","walk"],["cathedral","dunder","cross","서쪽 메아리 문 · 지하 터널",420,500,380,560],["cathedral","fdeep","cross","동쪽 동굴 (용의 피)",880,580,900,620],["cathedral","mouth","end","재물 셋을 바치면 문이 열림",790,450],["mouth","fortress","end","안개가 걷히며 등장",760,280]];
+
+// the sheet above is laid out at 1264 x 1472; SPREAD pulls everything apart without growing the bubbles
+const SPREAD = 1.2, W = Math.round(1264 * SPREAD), H = Math.round(1472 * SPREAD);
+for (const o of [...G, ...N]) { if (o.x !== undefined) { o.x *= SPREAD; o.y *= SPREAD; } if (o.cx !== undefined) { o.cx *= SPREAD; o.cy *= SPREAD; } }
+for (const e of E) for (const i of [4, 5, 6, 7]) if (e[i] !== undefined) e[i] *= SPREAD;
+
+const byId = {};
+for (const g of G) byId[g.id] = Object.assign(g, {kind:'group'});
+for (const n of N) byId[n.id] = Object.assign(n, {kind:'leaf'});
+const kids = {};
+for (const o of [...G, ...N]) if (o.parent) (kids[o.parent] = kids[o.parent] || []).push(o.id);
+const ancestors = id => { const a = []; let p = byId[id].parent; while (p) { a.unshift(p); p = byId[p].parent; } return a; };
+const leavesOf = id => byId[id].kind === 'leaf' ? [id] : (kids[id] || []).flatMap(leavesOf);
+const depth = id => ancestors(id).length;
+const DEFAULT = ['world'];
+let open = new Set(DEFAULT);
+const past = [];
+function change(fn) { past.push(new Set(open)); fn(); hideTip(); render(); }
+function back() { if (!past.length) return; open = past.pop(); hideTip(); render(); }
+const rep = id => { for (const g of ancestors(id)) if (!open.has(g)) return g; return id; };
+const R = o => o.kind === 'group' ? o.cr : 20 + o.size * 0.5;
+const posOf = id => { const o = byId[id]; return o.kind === 'group' ? {x:o.cx, y:o.cy, r:o.cr} : {x:o.x, y:o.y, r:R(o)}; };
+
+function convex(points) {
+  const p = points.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], hi = [];
+  for (const q of p) { while (lo.length >= 2 && cross(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); }
+  for (const q of p.reverse()) { while (hi.length >= 2 && cross(hi[hi.length - 2], hi[hi.length - 1], q) <= 0) hi.pop(); hi.push(q); }
+  return lo.slice(0, -1).concat(hi.slice(0, -1));
+}
+const ring = (x, y, r, n) => Array.from({length: n}, (_, i) => [x + r * Math.cos(i / n * Math.PI * 2), y + r * Math.sin(i / n * Math.PI * 2)]);
+const PAD = 16;
+function hullOf(gid) {
+  const pts = [];
+  for (const c of kids[gid] || []) {
+    if (byId[c].kind === 'leaf' || !open.has(c)) { const p = posOf(c); pts.push(...ring(p.x, p.y, p.r + PAD, 20)); }
+    else for (const q of hullOf(c)) pts.push(...ring(q[0], q[1], PAD + 10, 8));
+  }
+  return convex(pts);
+}
+
+const svg = document.getElementById('map'), NS = 'http://www.w3.org/2000/svg';
+svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); (parent || svg).appendChild(e); return e; };
+const tip = document.getElementById('tip'), stage = document.getElementById('stage');
+const STROKE = {walk:['#ece6da','', 2.4], both:['#ece6da','', 2.4], cross:['#d8d2c4','7 6', 2], glide:['#a98be0','3 6', 2.6], lift:['#e0a23b','', 2.6], sight:['#8f877a','2 7', 1.4], end:['#cf5b48','', 3]};
+const PRI = {end:7, lift:6, glide:6, walk:5, both:4, cross:2, sight:1};
+const showTip = (ev, html) => { const b = stage.getBoundingClientRect(); tip.hidden = false; tip.innerHTML = html;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.max(6, Math.min(b.width - w - 6, ev.clientX - b.left + 14)) + 'px';
+  tip.style.top = Math.max(6, Math.min(b.height - h - 6, ev.clientY - b.top + 14)) + 'px'; };
+const hideTip = () => { tip.hidden = true; };
+const asButton = (g, label, act) => {
+  g.setAttribute('tabindex', '0'); g.setAttribute('role', 'button'); g.setAttribute('aria-label', label);
+  g.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); act(); } });
+};
+
+function render() {
+  svg.textContent = '';
+  const defs = el('defs', {});
+  for (const [k, c] of [['walk','#ece6da'],['glide','#a98be0'],['lift','#e0a23b'],['end','#cf5b48']]) {
+    const m = el('marker', {id:'ar-' + k, viewBox:'0 0 10 10', refX:'8', refY:'5', markerWidth:'7', markerHeight:'7', orient:'auto-start-reverse'}, defs);
+    el('path', {d:'M0 0L10 5L0 10z', fill:c}, m);
+  }
+  const pat = el('pattern', {id:'grid', width:'40', height:'40', patternUnits:'userSpaceOnUse'}, defs);
+  el('path', {d:'M40 0H0V40', fill:'none', stroke:'#2a261f', 'stroke-width':'1'}, pat);
+  el('rect', {x:0, y:0, width:W, height:H, fill:'url(#grid)'});
+
+  const items = [...N.filter(n => rep(n.id) === n.id), ...G.filter(g => g.id !== 'world' && !open.has(g.id) && rep(g.id) === g.id)];
+  const circles = items.map(o => posOf(o.id));
+  const textW = (s, size) => s.length * size * 0.98 + 6;
+  const boxes = [[16, 16, 332, 344], [W - 24 - textW('↑ 참룡성채 · ← 사막 · 숲 →', 13), 16, W - 20, 42]];                        // the legend
+  const fits = b => {
+    if (b[0] < 6 || b[2] > W - 6 || b[1] < 6 || b[3] > H - 6) return false;
+    for (const q of boxes) if (b[0] < q[2] && b[2] > q[0] && b[1] < q[3] && b[3] > q[1]) return false;
+    for (const c of circles) { const nx = Math.max(b[0], Math.min(c.x, b[2])), ny = Math.max(b[1], Math.min(c.y, b[3]));
+      if (Math.hypot(nx - c.x, ny - c.y) < c.r + 9) return false; }
+    return true;
+  };
+  const boxAt = (x, y, w, anchor) => anchor === 'middle' ? [x - w / 2, y - 16, x + w / 2, y + 5] : anchor === 'end' ? [x - w, y - 16, x, y + 5] : [x, y - 16, x + w, y + 5];
+
+  const fitsX = (b, skip) => {
+    if (b[0] < 6 || b[2] > W - 6 || b[1] < 6 || b[3] > H - 6) return false;
+    for (const q of boxes) if (b[0] < q[2] + 3 && b[2] + 3 > q[0] && b[1] < q[3] + 3 && b[3] + 3 > q[1]) return false;
+    for (const c of circles) { if (c === skip) continue; const nx = Math.max(b[0], Math.min(c.x, b[2])), ny = Math.max(b[1], Math.min(c.y, b[3]));
+      if (Math.hypot(nx - c.x, ny - c.y) < c.r + 9) return false; }
+    return true;
+  };
+  const nameBox = new Map();
+  items.forEach((o, i) => {
+    const p = circles[i];
+    if (o.name.length * 15 <= 2 * p.r - 6) return;
+    const w = Math.max(textW(o.name, 15), o.note ? textW(o.note, 12) : 0), h = o.note ? 36 : 21, cand = [];
+    for (const d of [4, 16, 30, 48]) cand.push([p.x - w / 2, p.y + p.r + d, p.x + w / 2, p.y + p.r + d + h], [p.x - w / 2, p.y - p.r - d - h, p.x + w / 2, p.y - p.r - d],
+      [p.x + p.r + d + 4, p.y - h / 2, p.x + p.r + d + 4 + w, p.y + h / 2], [p.x - p.r - d - 4 - w, p.y - h / 2, p.x - p.r - d - 4, p.y + h / 2]);
+    const b = cand.find(c => fitsX(c, p)) || cand[0];
+    boxes.push(b); nameBox.set(o.id, b);
+  });
+
+  // open groups: dashed outline around what they hold, outer ones first
+  const openGroups = G.filter(g => g.id !== 'world' && open.has(g.id) && rep(g.id) === g.id).sort((a, b) => depth(a.id) - depth(b.id));
+  const gC = el('g', {}), hulls = {};
+  for (const g of openGroups) {
+    const h = hulls[g.id] = hullOf(g.id);
+    el('path', {d:'M' + h.map(q => q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join('L') + 'Z', fill:g.color, 'fill-opacity':'0.07',
+                stroke:g.color, 'stroke-width':'1.6', 'stroke-dasharray':'9 6', 'stroke-linejoin':'round'}, gC);
+  }
+
+  // paths between whatever is visible: a place inside a folded group stands in for its group
+  const agg = new Map();
+  for (const [a0, b0, k, label, lx, ly, cx, cy] of E) {
+    const a = rep(a0), b = rep(b0);
+    if (a === b) continue;
+    const leaf = a === a0 && b === b0;
+    if (k === 'sight' && !leaf) continue;
+    const ex = agg.get(a + '|' + b) || agg.get(b + '|' + a);
+    if (ex) { ex.count[k] = (ex.count[k] || 0) + 1; ex.n++; if (PRI[k] > PRI[ex.k]) Object.assign(ex, {k, a, b, label, leaf:false}); continue; }
+    agg.set(a + '|' + b, {a, b, k, label, lx, ly, cx, cy, leaf, n:1, count:{[k]:1}});
+  }
+  const gE = el('g', {}), gN = el('g', {}), gL = el('g', {});
+  for (const e of agg.values()) {
+    const A = posOf(e.a), B = posOf(e.b), curve = e.cx !== undefined;
+    const ax = curve ? e.cx : B.x, ay = curve ? e.cy : B.y, bx = curve ? e.cx : A.x, by = curve ? e.cy : A.y;
+    const la = Math.hypot(ax - A.x, ay - A.y), lb = Math.hypot(B.x - bx, B.y - by);
+    const x1 = A.x + (ax - A.x) / la * (A.r + 4), y1 = A.y + (ay - A.y) / la * (A.r + 4);
+    const x2 = B.x - (B.x - bx) / lb * (B.r + 7), y2 = B.y - (B.y - by) / lb * (B.r + 7);
+    const [c, dash, w] = STROKE[e.k];
+    const d = curve ? 'M' + x1 + ' ' + y1 + 'Q' + e.cx + ' ' + e.cy + ' ' + x2 + ' ' + y2 : 'M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2;
+    const p = el('path', {d, fill:'none', stroke:c, 'stroke-width':w, 'stroke-dasharray':dash, 'stroke-linecap':'round'}, gE);
+    if (e.k === 'walk' || e.k === 'glide' || e.k === 'lift' || e.k === 'end') p.setAttribute('marker-end', 'url(#ar-' + e.k + ')');
+    p.dataset.a = e.a; p.dataset.b = e.b;
+    let label = null;
+    if (e.leaf && e.n === 1 && e.label) label = e.label;
+    else if ((e.count.cross || 0) > 1) label = '교차 ' + e.count.cross + '곳';
+    else if (e.n === 1 && e.label && (e.k === 'lift' || e.k === 'glide' || curve)) label = e.label;
+    let spot = null;
+    if (label) {
+      const lw = textW(label, 13), pt = t => curve
+        ? [(1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * e.cx + t * t * x2, (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * e.cy + t * t * y2,
+           2 * (1 - t) * (e.cx - x1) + 2 * t * (x2 - e.cx), 2 * (1 - t) * (e.cy - y1) + 2 * t * (y2 - e.cy)]
+        : [x1 + (x2 - x1) * t, y1 + (y2 - y1) * t, x2 - x1, y2 - y1];
+      const cand = [];
+      if (e.leaf && e.lx !== undefined) cand.push([e.lx, e.ly]);
+      for (const dd of [14, 26, 40, 56, 76, 100, 130]) for (const tt of [0.5, 0.35, 0.65, 0.22, 0.78]) {
+        const [px, py, tx, ty] = pt(tt), tl = Math.hypot(tx, ty) || 1;
+        cand.push([px - ty / tl * dd, py + tx / tl * dd + 5], [px + ty / tl * dd, py - tx / tl * dd + 5]);
+      }
+      spot = cand.find(([sx, sy]) => fitsX(boxAt(sx, sy, lw, 'middle')));
+      if (!spot) el('title', {}, p).textContent = label;
+    }
+    if (spot) {
+      const mx = spot[0], my = spot[1];
+      boxes.push(boxAt(mx, my, textW(label, 13), 'middle'));
+      el('text', {x:mx, y:my, 'text-anchor':'middle', 'font-size':'13', fill:e.k === 'sight' ? '#a39a8b' : c, stroke:'#16140f', 'stroke-width':'4', 'paint-order':'stroke'}, gL).textContent = label;
+    }
+  }
+
+  // bubbles: visible places and folded groups
+  for (const o of items) {
+    const p = posOf(o.id), g = el('g', {style:o.kind === 'group' ? 'cursor:pointer' : 'cursor:default'}, gN);
+    const fill = o.kind === 'group' ? o.color : STYLE[o.t].fill;
+    if (o.kind === 'group') el('circle', {cx:p.x, cy:p.y, r:p.r + 7, fill:'none', stroke:o.color, 'stroke-width':'2', 'stroke-dasharray':'5 5'}, g);
+    el('circle', {cx:p.x, cy:p.y, r:p.r, fill, stroke:'#f4efe4', 'stroke-width':'2.5', 'fill-opacity':o.kind === 'group' ? 0.85 : 1}, g);
+    const dark = (o.kind === 'group' ? ['tail', 'right', 'mid', 'desert', 'range', 'approach'].includes(o.id) : o.t === 'hub') ? '#2a2414' : '#f7f3ea';
+    const inside = o.name.length * 15 <= 2 * p.r - 6;
+    const icon = o.kind === 'group' ? '' : STYLE[o.t].icon;
+    if (inside) {
+      if (icon) el('text', {x:p.x, y:p.y - 12, 'text-anchor':'middle', 'font-size':'15', fill:dark}, g).textContent = icon;
+      el('text', {x:p.x, y:p.y + (o.kind === 'group' ? 0 : 10), 'text-anchor':'middle', 'font-size':o.kind === 'group' ? '18' : '15', 'font-weight':'700', fill:dark}, g).textContent = o.name;
+      if (o.note) el('text', {x:p.x, y:p.y + (o.kind === 'group' ? 20 : 26), 'text-anchor':'middle', 'font-size':'12', fill:dark, opacity:'0.9'}, g).textContent = o.note;
+      if (o.kind === 'group') el('text', {x:p.x, y:p.y + 40, 'text-anchor':'middle', 'font-size':'12', fill:dark, opacity:'0.8'}, g).textContent = '▸ 안에 ' + leavesOf(o.id).length + '곳';
+    } else {
+      if (icon) el('text', {x:p.x, y:p.y + 5, 'text-anchor':'middle', 'font-size':'14', fill:dark}, g).textContent = icon;
+      const nb = nameBox.get(o.id), ncx = (nb[0] + nb[2]) / 2;
+      el('text', {x:ncx, y:nb[1] + 16, 'text-anchor':'middle', 'font-size':'15', 'font-weight':'600', fill:'#ece6da', stroke:'#16140f', 'stroke-width':'4', 'paint-order':'stroke'}, g).textContent = o.name;
+      if (o.note) el('text', {x:ncx, y:nb[1] + 32, 'text-anchor':'middle', 'font-size':'12', fill:'#a39a8b', stroke:'#16140f', 'stroke-width':'4', 'paint-order':'stroke'}, g).textContent = o.note;
+    }
+    const html = o.kind === 'group'
+      ? '<b>' + o.name + (o.note ? ' · ' + o.note : '') + '</b><span class="m">안에 ' + leavesOf(o.id).length + '곳</span><br>' + o.d + '<br><span class="m">누르면 펼쳐져요</span>'
+      : '<b>' + o.name + (o.note ? ' · ' + o.note : '') + '</b><br>' + o.d;
+    g.addEventListener('mousemove', ev => {
+      showTip(ev, html);
+      for (const ln of gE.children) ln.setAttribute('opacity', ln.dataset.a === o.id || ln.dataset.b === o.id ? 1 : 0.25);
+    });
+    g.addEventListener('mouseleave', () => { hideTip(); for (const ln of gE.children) ln.setAttribute('opacity', 1); });
+    if (o.kind === 'group') {
+      g.addEventListener('click', () => change(() => open.add(o.id)));
+      asButton(g, o.name + ' 펼치기', () => change(() => open.add(o.id)));
+    } else {
+      g.addEventListener('click', ev => { ev.stopPropagation(); showTip(ev, html); });   // touch screens have no hover
+    }
+  }
+  svg.appendChild(gL);
+
+  // open-group names: try above, beside and below the outline until a free spot turns up
+  const gT = el('g', {});
+  for (const g of openGroups) {
+    const h = hulls[g.id], s = STATIC ? g.name : '▾ ' + g.name + ' 접기', w = textW(s, 15) + 14;
+    const top = h.reduce((a, q) => q[1] < a[1] ? q : a), bot = h.reduce((a, q) => q[1] > a[1] ? q : a);
+    const lft = h.reduce((a, q) => q[0] < a[0] ? q : a), rgt = h.reduce((a, q) => q[0] > a[0] ? q : a);
+    const tries = [[top[0], top[1] - 8, 'middle'], [top[0] - w / 2 - 10, top[1] + 4, 'end'], [top[0] + w / 2 + 10, top[1] + 4, 'start'],
+                   [lft[0] - 8, lft[1] + 5, 'end'], [rgt[0] + 8, rgt[1] + 5, 'start'], [bot[0], bot[1] + 20, 'middle'],
+                   [top[0], top[1] + 24, 'middle'], [lft[0] + 10, lft[1] + 5, 'start'], [rgt[0] - 10, rgt[1] + 5, 'end']];
+    for (const dd of [30, 50, 75, 100, 130, 170]) tries.push([top[0], top[1] - dd, 'middle'], [bot[0], bot[1] + dd + 12, 'middle'], [lft[0] - dd, lft[1] + 5, 'end'], [rgt[0] + dd, rgt[1] + 5, 'start'],
+      [top[0] - dd, top[1] - 8, 'end'], [top[0] + dd, top[1] - 8, 'start']);
+    const pick = tries.find(t => fitsX(boxAt(t[0], t[1], w, t[2]))) || tries[0];
+    const bx = boxAt(pick[0], pick[1], w, pick[2]);
+    boxes.push(bx);
+    const btn = el('g', {style:'cursor:pointer'}, gT);
+    const pill = el('rect', {x:bx[0], y:bx[1] - 2, width:bx[2] - bx[0], height:bx[3] - bx[1] + 4, rx:12, fill:'#16140f', stroke:g.color, 'stroke-width':'1.6'}, btn);
+    el('text', {x:(bx[0] + bx[2]) / 2, y:pick[1], 'text-anchor':'middle', 'font-size':'15', 'font-weight':'700', fill:g.color}, btn).textContent = s;
+    btn.addEventListener('click', () => change(() => open.delete(g.id)));
+    asButton(btn, g.name + ' 접기', () => change(() => open.delete(g.id)));
+    btn.addEventListener('mousemove', ev => { pill.setAttribute('fill', '#2a261f'); showTip(ev, '<b>' + g.name + '</b>' + g.d + '<br><span class="m">누르면 접혀요</span>'); });
+    btn.addEventListener('mouseleave', () => { pill.setAttribute('fill', '#16140f'); hideTip(); });
+  }
+
+  document.getElementById('b-back').disabled = !past.length;
+  // legend, scale, orientation
+  const lg = el('g', {transform:'translate(24 24)'});
+  el('rect', {x:0, y:0, width:300, height:312, rx:10, fill:'#0f0e0bdd', stroke:'#3a352c'}, lg);
+  [['hub','거점 (여러 길이 만나는 곳)'],['place','장소'],['goal','목표 (보상·엔딩)'],['danger','보스 전투']].forEach(([t, label], i) => {
+    el('circle', {cx:22, cy:24 + i * 26, r:8, fill:STYLE[t].fill, stroke:'#f4efe4', 'stroke-width':1.5}, lg);
+    el('text', {x:40, y:29 + i * 26, 'font-size':'13', fill:'#ece6da'}, lg).textContent = label; });
+  [['walk','걷는 길 (화살표 = 진행 방향)'],['cross','지하 길'],['glide','순간이동'],['lift','승강대·승강기'],['end','엔딩 길 (예정)']].forEach(([k, label], i) => {
+    const [c, dash, w] = STROKE[k], y = 132 + i * 21;
+    const l = el('line', {x1:12, y1:y, x2:44, y2:y, stroke:c, 'stroke-width':w, 'stroke-dasharray':dash}, lg);
+    if (k === 'walk' || k === 'glide' || k === 'lift' || k === 'end') l.setAttribute('marker-end', 'url(#ar-' + k + ')');
+    el('text', {x:56, y:y + 4, 'font-size':'13', fill:'#ece6da'}, lg).textContent = label; });
+  el('circle', {cx:22, cy:266, r:9, fill:'#c7a98a', stroke:'#f4efe4', 'stroke-width':1.5}, lg);
+  el('circle', {cx:22, cy:266, r:14, fill:'none', stroke:'#c7a98a', 'stroke-width':1.5, 'stroke-dasharray':'4 3'}, lg);
+  el('text', {x:44, y:271, 'font-size':'13', fill:'#ece6da'}, lg).textContent = STATIC ? '묶음 (안에 장소가 더 있음)' : '묶음 (누르면 펼쳐짐)';
+  el('rect', {x:10, y:284, width:24, height:16, fill:'rgba(199,169,138,0.07)', stroke:'#c7a98a', 'stroke-dasharray':'5 4'}, lg);
+  el('text', {x:44, y:297, 'font-size':'13', fill:'#ece6da'}, lg).textContent = STATIC ? '펼친 묶음 (점선 테두리)' : '펼친 묶음 (▾ 접기 버튼·이전으로)';
+  const sc = el('g', {style:'display:none', transform:'translate(' + (W - 250) + ' ' + (H - 40) + ')'});
+  el('line', {x1:0, y1:0, x2:160 * SPREAD, y2:0, stroke:'#ece6da', 'stroke-width':2}, sc);
+  el('line', {x1:0, y1:-6, x2:0, y2:6, stroke:'#ece6da', 'stroke-width':2}, sc);
+  el('line', {x1:160 * SPREAD, y1:-6, x2:160 * SPREAD, y2:6, stroke:'#ece6da', 'stroke-width':2}, sc);
+  el('text', {x:80 * SPREAD, y:-10, 'text-anchor':'middle', 'font-size':'13', fill:'#ece6da'}, sc).textContent = '100m (월드, 대략)';
+  el('text', {x:W - 24, y:34, 'text-anchor':'end', 'font-size':'13', fill:'#a39a8b'}).textContent = '↑ 참룡성채 · ← 사막 · 숲 →';
+}
+
+// local captures use ?static=1&open=...; the published page always opens on the default view
+const params = new URLSearchParams(location.search);
+const STATIC = params.get('static') === '1';
+if (STATIC) document.body.classList.add('static');
+const pickOpen = params.get('open');
+if (pickOpen === 'all') open = new Set(G.map(g => g.id));
+else if (pickOpen === 'none') open = new Set(['world']);
+else if (pickOpen) open = new Set(['world', ...pickOpen.split(',')]);
+
+document.getElementById('b-back').onclick = back;
+document.getElementById('b-default').onclick = () => change(() => { open = new Set(DEFAULT); });
+document.getElementById('b-all').onclick = () => change(() => { open = new Set(G.map(g => g.id)); });
+document.getElementById('b-none').onclick = () => change(() => { open = new Set(['world']); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); back(); } });
+svg.addEventListener('click', hideTip);
+render();
+
+// place list
+const tree = document.getElementById('tree');
+function list(id) {
+  const ul = document.createElement('ul');
+  for (const c of kids[id] || []) {
+    const o = byId[c], li = document.createElement('li');
+    if (o.kind === 'group') {
+      li.innerHTML = '<span class="dot" style="background:' + o.color + '"></span><span class="g">' + o.name + '</span>' + (o.note ? ' <span class="m">' + o.note + '</span>' : '') + ' <span class="m">— ' + o.d + '</span>';
+      li.appendChild(list(c));
+    } else {
+      li.innerHTML = '<span class="dot" style="background:' + STYLE[o.t].fill + '"></span>' + o.name + (o.note ? ' <span class="m">' + o.note + '</span>' : '') +
+                     '<br><span class="m">' + o.d + '</span>';
+    }
+    ul.appendChild(li);
+  }
+  return ul;
+}
+tree.appendChild(list('world'));
+</script>

@@ -11,6 +11,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&display=swap">
   <link rel="stylesheet" href="assets/css/theme-color.css?v=20261102a">
+  <style>
+    @media(min-width:1101px){
+      .pcards.two{grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 40px}
+      .pcards.two .phead{flex-direction:column;align-items:flex-start;gap:14px}
+      .pcards.two .pbtns{justify-content:flex-start}
+      .pcards.two .g-thumbs{grid-template-columns:repeat(5,minmax(0,1fr))}
+      .pcards.two .g-thumb:nth-child(n+6){display:none}
+      .pcard.side{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:40px;align-items:start}
+      .pcard.side .phead{flex-direction:column;align-items:flex-start;gap:14px;margin:0}
+      .pcard.side .pbtns{justify-content:flex-start}
+    }
+    .pgroup + .pcards{margin-bottom:72px}
+  </style>
   <script data-goatcounter="https://kwc971109.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body><a class="skip-link" href="#main-content">본문 바로가기</a>
@@ -21,7 +34,7 @@
     <nav class="nav">
       <a href="#projects">Projects</a>
       <a href="#ai">AI 활용</a>
-      <a href="#docs">기획서</a>
+      <a href="#docs">기타</a>
       <a href="#about" class="hide-sm">About</a>
       <a class="nav-pr i-ext" href="https://drive.google.com/file/d/1PpBw2q_iCjKBQBAMTMLppfgNX7j-xgVZ/view" target="_blank" rel="noopener" data-goatcounter-click="https://drive.google.com/file/d/1PpBw2q_iCjKBQBAMTMLppfgNX7j-xgVZ/view" data-goatcounter-title="PR 문서">PR 문서</a>
     </nav>
@@ -45,9 +58,9 @@
     <div class="wrap">
       <div class="section-head pgroup">
         <span class="corp-logo dn sm"><img src="assets/img/brand/dragonnest-logo.png" alt="드래곤네스트"></span>
-        <div><h2>드래곤네스트 라이브</h2><p>아이덴티티게임즈에서 기획해 라이브에 출시한 콘텐츠</p></div>
+        <div><h2>회사 프로젝트</h2><p>아이덴티티게임즈 드래곤네스트에서 기획해 라이브에 출시한 콘텐츠</p></div>
       </div>
-      <div class="pcards">
+      <div class="pcards two">
 
         <article class="pcard" aria-labelledby="p-harori">
           <header class="phead">
@@ -108,9 +121,9 @@
       </div>
 
       <div class="section-head pgroup">
-        <div><h2>개인·팀 프로젝트</h2><p>UE5 개인 레벨과 Unity 팀 프로젝트</p></div>
+        <div><h2>언리얼 프로젝트</h2><p>AI를 지휘해 만든 UE5 개인 프로젝트</p></div>
       </div>
-      <div class="pcards">
+      <div class="pcards two">
 
         <article class="pcard" aria-labelledby="p-p2">
           <header class="phead">
@@ -142,7 +155,40 @@
           </div>
         </article>
 
-        <article class="pcard" aria-labelledby="p-ls">
+        <article class="pcard" aria-labelledby="p-ow">
+          <header class="phead">
+            <div class="ptitle"><span class="corp-logo eng"><img src="assets/img/brand/unreal-engine-mark.svg" alt=""><b>Unreal Engine 5</b></span><div>
+              <span class="k">UE5 오픈월드 · AI 스튜디오 · 개발 중</span>
+              <h3 id="p-ow"><a href="openworld.html">용이 잠드는 땅</a></h3>
+              <p>참룡산맥·결정화 사막·지하 성당을 잇는 오픈월드</p>
+            </div></div>
+            <div class="pbtns">
+              <a class="btn btn-primary" href="openworld.html">자세히 보기</a>
+              <a class="btn btn-ghost" href="openworld.html#flow">동선 의도</a>
+              <a class="btn btn-ghost" href="openworld.html#ai">AI 제작 방식</a>
+            </div>
+          </header>
+          <div class="gallery" data-gallery>
+            <div class="g-main">
+              <img class="g-img" src="assets/img/ow/ow-boss-crystal.jpg" alt="보스 모래 벌레 시험장. 결정이 깨지는 효과">
+            </div>
+            <div class="g-thumbs">
+              <button type="button" class="g-thumb" data-src="assets/img/ow/ow-boss-crystal.jpg" aria-pressed="true" aria-label="보스 모래 벌레 시험장. 결정이 깨지는 효과"><img src="assets/img/ow/ow-boss-crystal.jpg" alt="" loading="lazy"></button>
+              <button type="button" class="g-thumb" data-src="assets/img/ow/ow-boss-close.jpg" aria-pressed="false" aria-label="보스 모래 벌레 시험장. 모래 효과"><img src="assets/img/ow/ow-boss-close.jpg" alt="" loading="lazy"></button>
+              <button type="button" class="g-thumb" data-src="assets/img/ow/ow-storm-eye.jpg" aria-pressed="false" aria-label="결정화 사막 폭풍 지대를 위에서 본 개발 중 화면"><img src="assets/img/ow/ow-storm-eye.jpg" alt="" loading="lazy"></button>
+              <button type="button" class="g-thumb" data-src="assets/img/ow/ow-desert-plan.jpg" aria-pressed="false" aria-label="결정화 사막 동선 평면도"><img src="assets/img/ow/ow-desert-plan.jpg" alt="" loading="lazy"></button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="section-head pgroup">
+        <div><h2>유니티 프로젝트</h2><p>Unity 팀 프로젝트</p></div>
+      </div>
+      <div class="pcards">
+
+        <article class="pcard side" aria-labelledby="p-ls">
           <header class="phead">
             <div class="ptitle"><span class="corp-logo eng"><img src="assets/img/brand/unity-mark.svg" alt=""><b>Unity</b></span><div>
               <span class="k">팀 프로젝트 · Unity 2D 액션</span>
@@ -213,7 +259,7 @@
 
   <section class="block" id="docs">
     <div class="wrap">
-      <div class="section-head"><h2>기획서 바로 보기</h2><p>클릭하면 새 창에서 문서가 열립니다.</p></div>
+      <div class="section-head"><h2>기타</h2><p>기획서 바로 보기 · 클릭하면 새 창에서 문서가 열립니다.</p></div>
       <div class="doc-groups">
         <div class="doc-group">
           <h3>드래곤네스트 (라이브)</h3>

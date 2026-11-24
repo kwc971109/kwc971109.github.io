@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>용이 잠드는 땅 | 경원철</title>
+  <meta name="description" content="UE5 오픈월드 '용이 잠드는 땅'의 동선 의도와 AI 스튜디오 제작 방식 (개발 중)">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261028a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&display=swap">
+  <link rel="stylesheet" href="assets/css/theme-color.css?v=20261102a">
+  <style>
+    .wip-badge{display:inline-block;margin-left:10px;padding:3px 10px;border:1px solid var(--accent);border-radius:999px;font-size:13px;font-weight:800;color:var(--accent-ink);vertical-align:middle}
+    .video-slot{aspect-ratio:16/9;border:1.5px dashed var(--line);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:var(--ink-2);background:rgba(255,255,255,.03)}
+    .video-slot b{font-size:20px;color:var(--ink)}
+    .ow-shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+    .ow-shots figure{margin:0}
+    .ow-shots img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+    .ow-plan{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr);gap:24px;align-items:start}
+    .ow-plan img{width:100%;border-radius:12px;border:1px solid var(--line)}
+    .map-embed{margin:24px 0}
+    .case p.map-hint{max-width:none;margin:0 0 10px;padding:12px 16px;border-radius:10px;background:var(--accent);color:#0b1530;font-size:17px;text-align:center}
+    .map-embed iframe{display:block;width:100%;height:min(1560px,calc(min(100vw,1160px) * 1.17 + 330px));border:1px solid var(--line);border-radius:12px;background:#14120e}
+    .case p.map-open{max-width:none;margin:8px 0 0;text-align:right;font-size:14px}
+    @media(max-width:900px){.ow-shots,.ow-plan{grid-template-columns:1fr}}
+  </style>
+  <script data-goatcounter="https://kwc971109.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body><a class="skip-link" href="#main-content">본문 바로가기</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><b>경원철</b><span>콘텐츠 기획자</span></a>
+    <nav class="nav">
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#ai">AI 활용</a>
+      <a href="index.html#docs">기타</a>
+      <a href="index.html#about" class="hide-sm">About</a>
+      <a class="nav-pr i-ext" href="https://drive.google.com/file/d/1PpBw2q_iCjKBQBAMTMLppfgNX7j-xgVZ/view" target="_blank" rel="noopener" data-goatcounter-click="https://drive.google.com/file/d/1PpBw2q_iCjKBQBAMTMLppfgNX7j-xgVZ/view" data-goatcounter-title="PR 문서">PR 문서</a>
+    </nav>
+  </div>
+</header>
+
+<div class="text-hero with-media">
+  <div class="wrap">
+    <div class="th-text">
+      <a href="index.html#projects">← 전체 프로젝트</a>
+      <h1><span class="cl">용이 잠드는 땅</span><span class="wip-badge">개발 중</span></h1>
+      <p>재직 중 만들고 있는 UE5 오픈월드입니다.</p>
+      <p class="hero-sub"><span class="sn">검이 꽂힌 용의 뼈가 산맥이 된 참룡산맥과 결정이 솟은 사막을 지나, 지하 성당으로 모이는 오픈월드입니다.</span> <span class="sn"><span class="cl">기획과 레벨 판정은 직접 하고,</span> <span class="cl">구현은 헤드 세션 하나를 두고 10개가 넘는 AI 세션을 지휘해 만들고 있습니다.</span></span> <span class="sn"><a href="#ai">AI 제작 방식 보기</a></span></p>
+    </div>
+    <figure class="th-media"><img src="assets/img/ow/ow-boss-crystal.jpg" alt="결정 사이로 솟아오른 보스 모래 벌레와 체력 바" width="1600" height="908"><figcaption>보스 ‘모래 벌레’ 시험장 · 개발 중 화면</figcaption></figure>
+  </div>
+</div>
+
+<main id="main-content" class="case">
+  <div class="wrap">
+    <dl class="spec">
+      <div><dt>엔진</dt><dd>Unreal Engine 5</dd></div>
+      <div><dt>기간</dt><dd>2026.10.23 ~ 개발 중 · 개인 작업</dd></div>
+      <div><dt>범위</dt><dd>인트로 · 첫 부락 · 세 갈래 · 참룡산맥 · 결정화 사막 · 엔딩(예정) / 비통한 숲 제외</dd></div>
+      <div><dt>역할</dt><dd>기획·동선·배치 판정 직접 / 구현은 AI 세션 10개 이상</dd></div>
+    </dl>
+
+    <section id="play" class="block-play">
+      <div class="video-slot" role="img" aria-label="플레이 영상 준비 중">
+        <b>플레이 영상 준비 중</b>
+        <span>개발 중인 빌드를 녹화해 올릴 예정입니다.</span>
+      </div>
+    </section>
+
+    <section id="flow">
+      <h2>오픈월드 전체 루트</h2>
+      <p><span class="sn"><span class="cl">세 갈래 길에서 세 지역이 한눈에 보이고,</span> <span class="cl">지하 길은 참룡산맥의 성당으로 모입니다.</span></span> <span class="sn"><span class="cl">지역마다 보스를 쓰러뜨리고 재물 하나를 얻어,</span> <span class="cl">셋을 모아 성당에 바치면 엔딩입니다.</span></span> <span class="sn">비통한 숲은 이번 범위에서 빼고 들어가는 길만 표시했습니다.</span></p>
+      <div class="map-embed">
+        <p class="map-hint"><b>직접 눌러 보는 루트 지도</b> · 큰 원을 누르면 지역 안의 루트가 펼쳐집니다</p>
+        <iframe src="openworld-map.html" title="용이 잠드는 땅 루트 버블 지도 (원을 누르면 펼쳐짐)"></iframe>
+        <p class="map-open"><a href="openworld-map.html" target="_blank" rel="noopener">새 창에서 크게 보기 ↗</a></p>
+      </div>
+      <table class="t t-fluid"><tbody>
+        <tr><td class="k">인트로</td><td><span class="sn"><span class="cl">구름 위에서 깨어나 위습을 따라 낙하하고,</span> <span class="cl">위습을 잡고 활공해 해변 캠프에 내립니다.</span></span> <span class="sn">약 40초 안에 이동과 활공 조작을 하나씩 익힙니다.</span></td></tr>
+        <tr><td class="k">첫 부락</td><td><span class="sn">몹 무리 셋 → 스위치 셋 → 봉인 철문 순서로 지나갑니다.</span> <span class="sn">전투와 탐험의 기본 흐름을 짧게 반복합니다.</span></td></tr>
+        <tr><td class="k">세 갈래</td><td><span class="sn"><span class="cl">철문을 열면 세 지역이 한눈에 보이고,</span> <span class="cl">세 길이 처음부터 모두 열려 있습니다.</span></span> <span class="sn"><span class="cl">왼쪽은 결정화 사막, 가운데는 참룡산맥, 오른쪽은 비통한 숲이며,</span> <span class="cl">순서는 플레이어가 고릅니다.</span></span></td></tr>
+        <tr><td class="k">참룡산맥<br>(가운데)</td><td><span class="sn">갈비뼈 쉼터 → 나무 승강대 → 거대한 검의 코등이(바람이 세서 활공 금지) → 뼈 승강기 → 검 앞 지하 동굴 → 보스 광장 → 지하 성당에서 ‘용의 피’를 얻습니다.</span> <span class="sn"><span class="cl">성당은 지하 길의 중심으로,</span> <span class="cl">서쪽 메아리 문은 사막 지하로, 동쪽 동굴은 비통한 숲 깊은 곳으로 이어집니다.</span></span></td></tr>
+        <tr><td class="k">결정화 사막<br>(왼쪽)</td><td><span class="sn"><span class="cl">미끄러워 오를 수 없고 눈부심 때문에 활공도 짧은 가시 산 미로를 지나,</span> <span class="cl">모래 구덩이로 지하에 내려갑니다.</span></span> <span class="sn">성당의 메아리 문으로도 들어올 수 있습니다.</span> <span class="sn"><span class="cl">지하 공동에서 보스 ‘모래 벌레’를 쓰러뜨리고 보상방에서 ‘불의 원석’을 얻은 뒤,</span> <span class="cl">순간이동 장치로 땅 위 입구나 성당 근처 터널로 돌아갑니다.</span></span></td></tr>
+        <tr><td class="k">비통한 숲<br>(오른쪽)</td><td><span class="sn"><span class="cl">이번 범위에서 뺐습니다.</span> <span class="cl">세 갈래 오른쪽 땅 위 길이나 성당 동쪽 동굴로 늪 입구까지 갈 수 있고,</span></span> <span class="sn">늪 입구는 참룡산맥에서 얻은 ‘용의 피’가 있어야 지나갑니다.</span></td></tr>
+        <tr><td class="k">엔딩<br>(예정)</td><td><span class="sn"><span class="cl">세 지역에서 얻은 재물 셋을 성당에 바쳐 문이 열리면,</span> <span class="cl">용의 입에서 안개가 걷히며 참룡성채가 모습을 드러내고 끝납니다.</span></span></td></tr>
+      </tbody></table>
+
+      <h3 class="case-title">같은 조작, 지역마다 다른 규칙</h3>
+      <table class="t t-fluid"><tbody>
+        <tr><td class="k">놀이</td><td><b>첫 부락</b></td><td><b>참룡산맥</b></td><td><b>결정화 사막</b></td></tr>
+        <tr><td class="k">활공</td><td>인트로와 짧은 이동</td><td>검 위는 바람이 세서 금지 (엔딩 뒤 해금)</td><td>가시 산 사이 짧은 활공 (눈부심 때문에 오래 못 떠 있음)</td></tr>
+        <tr><td class="k">등반</td><td>망루와 계단</td><td>등뼈와 갈비뼈 오르기</td><td>가시 산은 미끄러워 못 오름 → 미로를 걸어서 풂</td></tr>
+      </tbody></table>
+
+      <div class="ow-plan" style="margin-top:28px">
+        <figure><img src="assets/img/ow/ow-desert-plan.jpg" alt="결정화 사막 전체 평면도. 지상 길과 지하 길, 보스 공동 위치가 선으로 표시돼 있다" loading="lazy" width="1296" height="1540"><figcaption>결정화 사막 동선 평면도 (작업 문서)</figcaption></figure>
+        <figure><img src="assets/img/ow/ow-storm-eye.jpg" alt="결정화 사막 폭풍 지대를 위에서 내려다본 화면" loading="lazy" width="1600" height="964"><figcaption>결정화 사막 폭풍 지대 (위에서 본 개발 중 화면)</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="shots">
+      <h2>개발 중 화면</h2>
+      <p>2026년 11월 빌드와 시험장 화면입니다. 계속 바뀌는 중입니다.</p>
+      <div class="ow-shots">
+        <figure><img src="assets/img/ow/ow-boss-crystal.jpg" alt="결정 사이로 솟아오른 보스 모래 벌레와 체력 바" loading="lazy" width="1600" height="908"><figcaption>보스 ‘모래 벌레’ 시험장 · 결정이 깨지는 효과</figcaption></figure>
+        <figure><img src="assets/img/ow/ow-boss-close.jpg" alt="모래 폭풍 속에서 보스 모래 벌레 앞에 선 플레이어" loading="lazy" width="1600" height="908"><figcaption>보스 ‘모래 벌레’ 시험장 · 모래 효과</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="ai">
+      <h2>AI 스튜디오로 만드는 방식</h2>
+      <p><span class="cl">게임의 방향과 판정은 제가 하고,</span> <span class="cl">구현은 역할을 나눈 AI 세션들이 맡습니다.</span></p>
+      <table class="t t-fluid"><tbody>
+        <tr><td class="k">지휘</td><td><span class="sn"><span class="cl">헤드 세션 하나가 시스템·레벨·캐릭터·VFX·QA 세션에 일을 나누고,</span> <span class="cl">저는 디렉터로서 기획 의도와 합격 기준을 정합니다.</span></span></td></tr>
+        <tr><td class="k">직접</td><td><span class="sn"><span class="cl">동선·배치·연출 판정과</span> <span class="cl">빌드를 직접 플레이하는 QA를 맡습니다.</span></span> <span class="sn">지금은 11번째 빌드로 QA 중입니다.</span></td></tr>
+        <tr><td class="k"><span class="cl">AI로 직접</span> <span class="cl">만든 도구</span></td><td><span class="sn">탐험 지점을 PCG로 자동 배치하는 플러그인,</span> <span class="sn">빌드를 켜서 오류·경고를 한 번에 세는 검사 도구,</span> <span class="sn">동선에서 15초 넘게 비는 구간을 찾는 페이싱 검사,</span> <span class="sn">보스 주위를 360도로 돌며 찍어 모션 캡처 장비 역할을 하는 촬영 스튜디오.</span></td></tr>
+        <tr><td class="k">검수</td><td><span class="sn"><span class="cl">만든 AI가 아닌 다른 모델이 교차 검수하고,</span> <span class="cl">고칠 곳은 붉은 원을 친 스크린샷으로 짚습니다.</span></span></td></tr>
+        <tr><td class="k">규모</td><td>시작한 지 약 한 달, 커밋 1만 2천여 개</td></tr>
+      </tbody></table>
+    </section>
+
+    <nav class="next-case">
+      <a href="p2-level.html">← PANOPTICON</a>
+      <a href="last-sanctuary.html">Last Sanctuary →</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer" id="contact">
+  <div class="wrap">
+    <h2>경원철 · 콘텐츠 기획자</h2>
+    <div class="contact"><a href="mailto:kwc971109@gmail.com">kwc971109@gmail.com</a></div>
+    <p><a href="https://drive.google.com/file/d/1PpBw2q_iCjKBQBAMTMLppfgNX7j-xgVZ/view" target="_blank" rel="noopener" data-goatcounter-click="https://drive.google.com/file/d/1PpBw2q_iCjKBQBAMTMLppfgNX7j-xgVZ/view" data-goatcounter-title="콘텐츠 기획 PR 문서 PDF">콘텐츠 기획 PR 문서 PDF</a></p>
+    <small>© 2026 경원철</small>
+  </div>
+</footer>
+<script src="assets/js/wrap.js?v=20261021e"></script>
+</body>
+</html>
