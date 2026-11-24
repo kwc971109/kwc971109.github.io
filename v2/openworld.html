@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>용이 잠드는 땅 | 경원철</title>
-  <meta name="description" content="UE5 오픈월드 '용이 잠드는 땅'의 동선 의도와 AI 스튜디오 제작 방식 (개발 중)">
+  <title>용이 잠든 땅 | 경원철</title>
+  <meta name="description" content="UE5 오픈월드 '용이 잠든 땅'의 동선 의도와 AI 스튜디오 제작 방식 (개발 중)">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/style.css?v=20261028a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,9 +12,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&display=swap">
   <link rel="stylesheet" href="assets/css/theme-color.css?v=20261102a">
   <style>
-    .wip-badge{display:inline-block;margin-left:10px;padding:3px 10px;border:1px solid var(--accent);border-radius:999px;font-size:13px;font-weight:800;color:var(--accent-ink);vertical-align:middle}
-    .video-slot{aspect-ratio:16/9;border:1.5px dashed var(--line);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:var(--ink-2);background:rgba(255,255,255,.03)}
-    .video-slot b{font-size:20px;color:var(--ink)}
+    .th-media.ow-title-media img{aspect-ratio:auto}
+    .wip-badge{display:inline-block;margin-left:10px;padding:3px 10px;border:1px solid var(--accent);border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--accent-ink);vertical-align:middle;white-space:nowrap}
+    .ow-jumps{display:flex;flex-wrap:wrap;gap:8px 20px}
+    .ow-clip-duration{font-size:14px;font-style:normal;font-weight:700;letter-spacing:0;color:var(--muted);margin-inline-start:10px;white-space:nowrap}
     .ow-shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
     .ow-shots figure{margin:0}
     .ow-shots img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
@@ -22,7 +23,7 @@
     .ow-plan img{width:100%;border-radius:12px;border:1px solid var(--line)}
     .map-embed{margin:24px 0}
     .case p.map-hint{max-width:none;margin:0 0 10px;padding:12px 16px;border-radius:10px;background:var(--accent);color:#0b1530;font-size:17px;text-align:center}
-    .map-embed iframe{display:block;width:100%;height:min(1560px,calc(min(100vw,1160px) * 1.17 + 330px));border:1px solid var(--line);border-radius:12px;background:#14120e}
+    .map-embed iframe{display:block;width:100%;height:calc(min(100vw - 32px, 1072px) * 1.164 + 138px);border:1px solid var(--line);border-radius:12px;background:#14120e}
     .case p.map-open{max-width:none;margin:8px 0 0;text-align:right;font-size:14px}
     @media(max-width:900px){.ow-shots,.ow-plan{grid-template-columns:1fr}}
   </style>
@@ -47,11 +48,12 @@
   <div class="wrap">
     <div class="th-text">
       <a href="index.html#projects">← 전체 프로젝트</a>
-      <h1><span class="cl">용이 잠드는 땅</span><span class="wip-badge">개발 중</span></h1>
+      <h1><span class="cl">용이 잠든 땅</span><span class="wip-badge">개발 중</span></h1>
       <p>재직 중 만들고 있는 UE5 오픈월드입니다.</p>
-      <p class="hero-sub"><span class="sn">검이 꽂힌 용의 뼈가 산맥이 된 참룡산맥과 결정이 솟은 사막을 지나, 지하 성당으로 모이는 오픈월드입니다.</span> <span class="sn"><span class="cl">기획과 레벨 판정은 직접 하고,</span> <span class="cl">구현은 헤드 세션 하나를 두고 10개가 넘는 AI 세션을 지휘해 만들고 있습니다.</span></span> <span class="sn"><a href="#ai">AI 제작 방식 보기</a></span></p>
+      <p class="hero-sub"><span class="sn">거대한 검이 꽂힌 용의 시체가 그대로 산맥이 된 참룡산맥을 배경으로, 용의 브레스로 결정화된 땅인 결정화 사막을 지나, 용의 강력한 독이 섞인 피가 흘러 저주 받은 숲인 비통한 숲을 지나 참룡 성채를 해방하는 오픈월드입니다.</span> <span class="sn"><span class="cl">기획과 레벨 판정은 직접 하고,</span> <span class="cl">구현은 헤드 세션 하나를 두고 10개가 넘는 AI 세션을 지휘해 만들고 있습니다.</span></span></p>
+      <p class="hero-sub ow-jumps"><a href="#flow">동선 의도</a><a href="#ai">AI 제작 방식 보기</a></p>
     </div>
-    <figure class="th-media"><img src="assets/img/ow/ow-boss-crystal.jpg" alt="결정 사이로 솟아오른 보스 모래 벌레와 체력 바" width="1600" height="908"><figcaption>보스 ‘모래 벌레’ 시험장 · 개발 중 화면</figcaption></figure>
+    <figure class="th-media ow-title-media"><img src="assets/img/ow/ow-title-scene.png" alt="참룡산맥 위로 낙하하는 플레이어와 ‘용이 잠든 땅’ 타이틀 로고" width="1932" height="1090"><figcaption>인트로 타이틀 장면 · 개발 중 화면</figcaption></figure>
   </div>
 </div>
 
@@ -64,29 +66,52 @@
       <div><dt>역할</dt><dd>기획·동선·배치 판정 직접 / 구현은 AI 세션 10개 이상</dd></div>
     </dl>
 
-    <section id="play" class="block-play">
-      <div class="video-slot" role="img" aria-label="플레이 영상 준비 중">
-        <b>플레이 영상 준비 중</b>
-        <span>개발 중인 빌드를 녹화해 올릴 예정입니다.</span>
-      </div>
+    <div class="links case-links">
+      <a class="btn btn-primary i-play" href="https://youtu.be/VT03a5coIzo" target="_blank" rel="noopener" data-goatcounter-click="https://youtu.be/VT03a5coIzo" data-goatcounter-title="용이 잠든 땅 전체 플레이 영상">전체 플레이 영상 (13:49)</a>
+    </div>
+    <section id="play" class="block-play" aria-labelledby="ow-highlight-heading">
+      <h2 id="ow-highlight-heading">주요 장면 <span class="ow-clip-duration">약 1분 38초</span></h2>
+      <figure class="clip clip-wide">
+        <video src="assets/media/ow-highlight.mp4" poster="assets/img/ow/ow-highlight-poster.jpg" controls playsinline preload="metadata" width="1280" height="720" aria-label="용이 잠든 땅 주요 장면, 약 1분 38초, 소리 있음">
+          <a href="assets/media/ow-highlight.mp4">주요 장면 영상 파일 열기</a>
+        </video>
+        <figcaption>인트로부터 보상방 순간이동까지 · 소리&nbsp;있음</figcaption>
+      </figure>
+    </section>
+
+    <section id="boss">
+      <h2>보스 패턴 · <span class="cl">용의 마력에 이끌린 모래 벌레</span></h2>
+      <figure class="clip clip-wide">
+        <video src="assets/media/ow-boss-cycle.mp4?v=20261123" poster="assets/img/ow/ow-boss-cycle-poster.jpg?v=20261123" controls playsinline preload="metadata" width="1280" height="722" aria-label="용의 마력에 이끌린 모래 벌레 패턴 영상">
+          <a href="assets/media/ow-boss-cycle.mp4?v=20261123">보스 패턴 영상 파일 열기</a>
+        </video>
+        <figcaption>개발 중 시험장 영상 · 보스 패턴 한 바퀴 (38초)</figcaption>
+      </figure>
     </section>
 
     <section id="flow">
       <h2>오픈월드 전체 루트</h2>
-      <p><span class="sn"><span class="cl">세 갈래 길에서 세 지역이 한눈에 보이고,</span> <span class="cl">지하 길은 참룡산맥의 성당으로 모입니다.</span></span> <span class="sn"><span class="cl">지역마다 보스를 쓰러뜨리고 재물 하나를 얻어,</span> <span class="cl">셋을 모아 성당에 바치면 엔딩입니다.</span></span> <span class="sn">비통한 숲은 이번 범위에서 빼고 들어가는 길만 표시했습니다.</span></p>
+      <p><span class="sn"><span class="cl">세 갈래 길에서 세 지역이 한눈에 보이고,</span> <span class="cl">지하 길은 참룡산맥의 성당으로 모입니다.</span></span> <span class="sn"><span class="cl">엔딩에서는 세 지역의 보물을 모아,</span> <span class="cl">성당의 제단에 바칠 예정입니다.</span></span> <span class="sn">비통한 숲은 아직 개발 중으로 이번에는 진입로만 표기했습니다.</span></p>
       <div class="map-embed">
-        <p class="map-hint"><b>직접 눌러 보는 루트 지도</b> · 큰 원을 누르면 지역 안의 루트가 펼쳐집니다</p>
-        <iframe src="openworld-map.html" title="용이 잠드는 땅 루트 버블 지도 (원을 누르면 펼쳐짐)"></iframe>
+        <p class="map-hint"><b>루트 지도</b> · 큰 원을 눌러 지역 안 경로 보기</p>
+        <iframe src="openworld-map.html?embed=1" title="용이 잠든 땅 루트 버블 지도 (원을 누르면 펼쳐짐)"></iframe>
         <p class="map-open"><a href="openworld-map.html" target="_blank" rel="noopener">새 창에서 크게 보기 ↗</a></p>
       </div>
       <table class="t t-fluid"><tbody>
         <tr><td class="k">인트로</td><td><span class="sn"><span class="cl">구름 위에서 깨어나 위습을 따라 낙하하고,</span> <span class="cl">위습을 잡고 활공해 해변 캠프에 내립니다.</span></span> <span class="sn">약 40초 안에 이동과 활공 조작을 하나씩 익힙니다.</span></td></tr>
         <tr><td class="k">첫 부락</td><td><span class="sn">몹 무리 셋 → 스위치 셋 → 봉인 철문 순서로 지나갑니다.</span> <span class="sn">전투와 탐험의 기본 흐름을 짧게 반복합니다.</span></td></tr>
         <tr><td class="k">세 갈래</td><td><span class="sn"><span class="cl">철문을 열면 세 지역이 한눈에 보이고,</span> <span class="cl">세 길이 처음부터 모두 열려 있습니다.</span></span> <span class="sn"><span class="cl">왼쪽은 결정화 사막, 가운데는 참룡산맥, 오른쪽은 비통한 숲이며,</span> <span class="cl">순서는 플레이어가 고릅니다.</span></span></td></tr>
-        <tr><td class="k">참룡산맥<br>(가운데)</td><td><span class="sn">갈비뼈 쉼터 → 나무 승강대 → 거대한 검의 코등이(바람이 세서 활공 금지) → 뼈 승강기 → 검 앞 지하 동굴 → 보스 광장 → 지하 성당에서 ‘용의 피’를 얻습니다.</span> <span class="sn"><span class="cl">성당은 지하 길의 중심으로,</span> <span class="cl">서쪽 메아리 문은 사막 지하로, 동쪽 동굴은 비통한 숲 깊은 곳으로 이어집니다.</span></span></td></tr>
-        <tr><td class="k">결정화 사막<br>(왼쪽)</td><td><span class="sn"><span class="cl">미끄러워 오를 수 없는 가시 산 미로를 걸어서 지나,</span> <span class="cl">모래 구덩이로 지하에 내려갑니다.</span></span> <span class="sn">폭풍 때문에 바람이 세서 활공은 막혀 있고, 폭풍이 사라진 뒤에 풀립니다.</span> <span class="sn">성당의 메아리 문으로도 들어올 수 있습니다.</span> <span class="sn"><span class="cl">지하 공동에서 보스 ‘모래 벌레’를 쓰러뜨리고 보상방에서 ‘불의 원석’을 얻은 뒤,</span> <span class="cl">순간이동 장치로 땅 위 입구나 성당 근처 터널로 돌아갑니다.</span></span></td></tr>
-        <tr><td class="k">비통한 숲<br>(오른쪽)</td><td><span class="sn"><span class="cl">이번 범위에서 뺐습니다.</span> <span class="cl">세 갈래 오른쪽 땅 위 길이나 성당 동쪽 동굴로 늪 입구까지 갈 수 있고,</span></span> <span class="sn">늪 입구는 참룡산맥에서 얻은 ‘용의 피’가 있어야 지나갑니다.</span></td></tr>
-        <tr><td class="k">엔딩<br>(예정)</td><td><span class="sn"><span class="cl">세 지역에서 얻은 재물 셋을 성당에 바쳐 문이 열리면,</span> <span class="cl">용의 입에서 안개가 걷히며 참룡성채가 모습을 드러내고 끝납니다.</span></span></td></tr>
+        <tr><td class="k">참룡산맥<br>(가운데)</td><td>
+          <span class="sn">참룡 사당 입구 → 꼬리 승강기 → 거대한 검의 코등이(강풍으로 활공 불가) → 머리 승강기 → 식도 광산 → 지하 성당 순으로 이어집니다.</span>
+          <span class="sn">지하 성당에서 ‘용의 피’를 얻습니다. 서쪽 문은 결정화 사막 지하로, 동쪽 길은 비통한 숲의 깊은 늪으로 이어집니다.</span>
+        </td></tr>
+        <tr><td class="k">결정화 사막<br>(왼쪽)</td><td>
+          <span class="sn">지하 성당의 서쪽 문으로 들어가거나, 세 갈래 길에서 사막 쪽으로 내려가 구멍을 통과하면 사막 지하에 닿습니다.</span>
+          <span class="sn">지하를 지나 동굴을 따라 지상으로 올라오면 결정화 폭풍을 마주합니다. 폭풍을 피해 다시 지하로 내려가면 깊은 지하 입구 너머에서 ‘용의 마력에 이끌린 모래 벌레’와 싸웁니다.</span>
+          <span class="sn">보스를 쓰러뜨리면 보상 방에서 비를 그치게 하는 ‘불의 원석’을 얻습니다.</span>
+        </td></tr>
+        <tr><td class="k">비통한 숲<br>(오른쪽)</td><td><span class="sn"><span class="cl">아직 개발 중입니다.</span> <span class="cl">세 갈래 오른쪽 길은 늪 입구로, 지하 성당 동쪽 길은 깊은 늪으로 이어집니다.</span></span> <span class="sn">늪 입구를 지나려면 참룡산맥에서 얻는 ‘용의 피’가 필요합니다.</span></td></tr>
+        <tr><td class="k">엔딩<br>(예정)</td><td><span class="sn"><span class="cl">보물 셋을 가지고 성당에 들어서면 공명이 일어나 나선 계단이 열립니다.</span> <span class="cl">성당의 제단에 보물을 바치면 용의 입 너머 안개가 걷히고 참룡성채가 모습을 드러냅니다.</span></span></td></tr>
       </tbody></table>
 
       <h3 class="case-title">같은 조작, 지역마다 다른 규칙</h3>
@@ -107,8 +132,8 @@
       <h2>개발 중 화면</h2>
       <p>2026년 11월 빌드와 시험장 화면입니다. 계속 바뀌는 중입니다.</p>
       <div class="ow-shots">
-        <figure><img src="assets/img/ow/ow-boss-crystal.jpg" alt="결정 사이로 솟아오른 보스 모래 벌레와 체력 바" loading="lazy" width="1600" height="908"><figcaption>보스 ‘모래 벌레’ 시험장 · 결정이 깨지는 효과</figcaption></figure>
-        <figure><img src="assets/img/ow/ow-boss-close.jpg" alt="모래 폭풍 속에서 보스 모래 벌레 앞에 선 플레이어" loading="lazy" width="1600" height="908"><figcaption>보스 ‘모래 벌레’ 시험장 · 모래 효과</figcaption></figure>
+        <figure><img src="assets/img/ow/ow-boss-crystal.jpg" alt="결정 사이로 솟아오른 보스 모래 벌레와 체력 바" loading="lazy" width="1600" height="908"><figcaption>보스 시험장 · 결정이 깨지는 효과</figcaption></figure>
+        <figure><img src="assets/img/ow/ow-storm-first.jpg" alt="지상으로 올라온 플레이어가 처음 마주한 거대한 결정화 폭풍" loading="lazy" width="1280" height="720"><figcaption>폭풍 VFX 테스트</figcaption></figure>
       </div>
     </section>
 
@@ -117,9 +142,9 @@
       <p><span class="cl">게임의 방향과 판정은 제가 하고,</span> <span class="cl">구현은 역할을 나눈 AI 세션들이 맡습니다.</span></p>
       <table class="t t-fluid"><tbody>
         <tr><td class="k">지휘</td><td><span class="sn"><span class="cl">헤드 세션 하나가 시스템·레벨·캐릭터·VFX·QA 세션에 일을 나누고,</span> <span class="cl">저는 디렉터로서 기획 의도와 합격 기준을 정합니다.</span></span></td></tr>
-        <tr><td class="k">직접</td><td><span class="sn"><span class="cl">동선·배치·연출 판정과</span> <span class="cl">빌드를 직접 플레이하는 QA를 맡습니다.</span></span> <span class="sn">지금은 11번째 빌드로 QA 중입니다.</span></td></tr>
-        <tr><td class="k"><span class="cl">AI로 직접</span> <span class="cl">만든 도구</span></td><td><span class="sn">탐험 지점을 PCG로 자동 배치하는 플러그인,</span> <span class="sn">빌드를 켜서 오류·경고를 한 번에 세는 검사 도구,</span> <span class="sn">동선에서 15초 넘게 비는 구간을 찾는 페이싱 검사,</span> <span class="sn">보스 주위를 360도로 돌며 찍어 모션 캡처 장비 역할을 하는 촬영 스튜디오.</span></td></tr>
-        <tr><td class="k">검수</td><td><span class="sn"><span class="cl">만든 AI가 아닌 다른 모델이 교차 검수하고,</span> <span class="cl">고칠 곳은 붉은 원을 친 스크린샷으로 짚습니다.</span></span></td></tr>
+        <tr><td class="k">직접</td><td><span class="sn"><span class="cl">동선·배치·연출 판정과</span> <span class="cl">빌드를 직접 플레이하는 QA를 맡습니다.</span></span> <span class="sn">12번째 빌드까지 제작했습니다.</span></td></tr>
+        <tr><td class="k"><span class="cl">AI로 직접</span> <span class="cl">만든 도구</span></td><td><span class="sn">배경 식생을 PCG로 자동 배치하는 플러그인,</span> <span class="sn">빌드를 켜서 오류·경고를 한 번에 세는 검사 도구,</span> <span class="sn">동선에서 15초 넘게 비는 구간을 찾는 페이싱 검사,</span> <span class="sn">촬영 스튜디오 등.</span></td></tr>
+        <tr><td class="k">검수</td><td><span class="sn"><span class="cl">여러 AI 모델로 결과를 교차 검증했고,</span> <span class="cl">저도 작업 중 수시로 에디터에서 직접 플레이하며 확인했습니다.</span></span></td></tr>
         <tr><td class="k">규모</td><td>시작한 지 약 한 달, 커밋 1만 2천여 개</td></tr>
       </tbody></table>
     </section>
