@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>진천검 유영 | 경원철 포트폴리오</title>
-  <meta name="description" content="드래곤네스트 독무 토벌전 시즌2 보스 '진천검 유영' 전투 기획">
+  <meta name="description" content="드래곤네스트의 기존 몬스터 애니메이션·시각 효과·사운드를 활용해 혼자 제작한 독무 토벌전 시즌2 보스, 진천검 유영">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/style.css?v=20261028a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,17 +34,17 @@
       <a href="index.html#projects">← 전체 프로젝트</a>
       <div class="game-logo"><span class="corp-logo dn sm"><img src="assets/img/brand/dragonnest-logo.png" alt="드래곤네스트"></span></div>
       <h1>진천검<span class="hj">(震天劍)</span> 유영</h1>
-      <p><span class="sn">드래곤네스트 독무 토벌전 시즌2의 1:1 보스입니다.</span> <span class="sn">지진 콘셉트로 설계하고, 바닥 광역 공격과 무협풍 돌진에 체력 구간별 패턴을 더했습니다.</span></p>
+      <p>게임에 있던 몬스터 애니메이션과 시각 효과, 사운드를 조합해 1:1 보스를 혼자 만들었습니다.</p>
     </div>
-    <figure class="th-media"><img src="assets/img/yy/yy-p7-windup.jpg" alt="검을 들고 공격을 준비하는 보스 유영과 그 앞의 플레이어" width="960" height="605"><figcaption>라이브 전투 화면 · 공격을 준비하는 유영</figcaption></figure>
+    <figure class="th-media"><img src="assets/img/yy/yy-p7-windup.jpg" alt="검을 들고 공격을 준비하는 보스 유영과 그 앞의 플레이어" width="960" height="605"><figcaption>라이브 전투 화면 · <a href="#guided-sword">유도 검 패턴 5초 보기</a></figcaption></figure>
   </div>
 </div>
 
 <main id="main-content" class="case">
   <div class="wrap">
     <dl class="spec">
-      <div><dt>게임</dt><dd>드래곤네스트</dd></div>
-      <div><dt>콘텐츠</dt><dd>독무 토벌전 시즌2 · 1:1 보스</dd></div>
+      <div><dt>콘텐츠</dt><dd>드래곤네스트 · 독무 토벌전 시즌2</dd></div>
+      <div><dt>역할</dt><dd>1:1 보스 단독 제작</dd></div>
       <div><dt>라이브</dt><dd>2026.05 · 1개월</dd></div>
       <div><dt>규칙</dt><dd>5분 제한 · 부활 불가</dd></div>
     </dl>
@@ -73,11 +73,10 @@
       </ul>
     </section>
 
-    <section>
-      <h2>프레임 단위 유도 투사체 재설계</h2>
-      <p><span class="sn">기존 보스의 발사체 패턴을 개조해 만들었습니다.</span> <span class="sn"><span class="cl">원래는 플레이어에게 정확히 날아가고,</span> <span class="cl">몇 초 뒤 폭발할 때 범위 피해를 주는 발사체입니다.</span></span> <span class="sn"><span class="cl">그런데 날아가 맞는 순간에도 피해를 넣자 유도 성능이 너무 좋아,</span> <span class="cl">플레이어가 무조건 맞았습니다.</span></span> <span class="sn"><span class="cl">그래서 거의 새로 만들다시피 바꿔,</span> <span class="cl">검이 플레이어가 직전에 있던 바닥에 꽂히고 1초 뒤 터지게 했습니다.</span></span> <span class="sn">타이밍은 보스 모션으로 알려 줍니다.</span></p>
-      <p><span class="cl">공중에서 조준한 뒤 다시 유도 투사체를 쏘는 구조라,</span> <span class="cl">프레임을 맞추는 시그널(언리얼로 치면 블루프린트 노드 하나)을 1프레임 단위로 맞춰 조준이 튀는 문제도 잡았습니다.</span></p>
-      <figure class="clip"><video id="yy-clip" src="assets/media/yy-p8-sword.mp4?v=2" poster="assets/img/yy/yy-p8-sword-poster.jpg?v=2" autoplay muted loop playsinline controls preload="auto" width="804" height="406" aria-label="유도 검 패턴 반복 영상. 붉은 조준선이 플레이어를 따라가다, 검 두 자루가 꽂힌 자리가 차례로 터진다"></video><figcaption>유도 검 패턴 (5.1초&nbsp;반복) · 붉은 조준선이 플레이어를 따라가다, 검이 꽂힌 자리가 1초 뒤 터집니다. 테스트 영상에서 화면 UI 일부를 지웠습니다.</figcaption></figure>
+    <section id="guided-sword">
+      <h2>피할 틈을 만든 유도 검</h2>
+      <figure class="clip"><video id="yy-clip" src="assets/media/yy-p8-sword.mp4?v=2" poster="assets/img/yy/yy-p8-sword-poster.jpg?v=2" autoplay muted loop playsinline controls preload="auto" width="804" height="406" aria-label="붉은 조준선이 플레이어를 따라가다 검 두 자루가 꽂힌 자리가 차례로 터지는 장면"></video><figcaption>5.1초 반복 · 검은 플레이어가 방금 서 있던 자리에 꽂히고 1초 뒤 터집니다. 테스트 영상에서 화면 UI 일부를 지웠습니다.</figcaption></figure>
+      <p style="margin-top:12px">처음에는 검이 끝까지 따라와 피할 수 없었습니다. 보스의 준비 동작을 보고 피하도록 바꾸고, 발사 시점을 한 프레임씩 맞춰 조준이 튀는 문제도 잡았습니다.</p>
     </section>
 
     <section>

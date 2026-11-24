@@ -13,9 +13,30 @@
   <link rel="stylesheet" href="assets/css/theme-color.css?v=20261102a">
   <style>
     .th-media.ow-title-media img{aspect-ratio:auto}
+    .ow-intro-copy>p:first-child{margin-top:0}
+    @media(min-width:901px){
+      .text-hero.ow-intro .wrap{row-gap:0}
+      .ow-title-media{grid-column:2;grid-row:1 / span 2}
+    }
+    @media(max-width:900px){.ow-intro h1{margin-bottom:0}}
     .wip-badge{display:inline-block;margin-left:10px;padding:3px 10px;border:1px solid var(--accent);border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--accent-ink);vertical-align:middle;white-space:nowrap}
     .ow-jumps{display:flex;flex-wrap:wrap;gap:8px 20px}
     .ow-clip-duration{font-size:14px;font-style:normal;font-weight:700;letter-spacing:0;color:var(--muted);margin-inline-start:10px;white-space:nowrap}
+    .ow-fork{margin:18px 0 32px}
+    .ow-fork img{display:block;width:100%;max-width:880px;height:auto;border-radius:12px}
+    .ow-fork a,.ow-full-link a,.ow-scene-links a{text-decoration:underline;text-underline-offset:3px}
+    .ow-scene-links{display:flex;flex-wrap:wrap;gap:6px 20px}
+    #sword-descent{scroll-margin-top:76px}
+    #play h2{display:inline-block;margin-right:18px}
+    .case p.ow-full-link{display:inline-block;font-size:15px;margin:0 0 12px}
+    .rule-label{display:none}
+    .ow-rules th{text-align:left}
+    @media(max-width:640px){
+      .ow-rules thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+      .ow-rules tbody tr{display:grid;grid-template-columns:1fr}
+      .ow-rules th[scope=row]{color:var(--accent);padding:12px}
+      .rule-label{display:inline;font-weight:700;color:var(--accent)}
+    }
     .ow-shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
     .ow-shots figure{margin:0}
     .ow-shots img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
@@ -44,16 +65,19 @@
   </div>
 </header>
 
-<div class="text-hero with-media">
+<div class="text-hero with-media ow-intro">
   <div class="wrap">
     <div class="th-text">
       <a href="index.html#projects">← 전체 프로젝트</a>
       <h1><span class="cl">용이 잠든 땅</span><span class="wip-badge">개발 중</span></h1>
-      <p>재직 중 만들고 있는 UE5 오픈월드입니다.</p>
-      <p class="hero-sub"><span class="sn">거대한 검이 꽂힌 용의 시체가 그대로 산맥이 된 참룡산맥을 배경으로, 용의 브레스로 결정화된 땅인 결정화 사막을 지나, 용의 강력한 독이 섞인 피가 흘러 저주 받은 숲인 비통한 숲을 지나 참룡 성채를 해방하는 오픈월드입니다.</span> <span class="sn"><span class="cl">기획과 레벨 판정은 직접 하고,</span> <span class="cl">구현은 헤드 세션 하나를 두고 10개가 넘는 AI 세션을 지휘해 만들고 있습니다.</span></span></p>
-      <p class="hero-sub ow-jumps"><a href="#flow">동선 의도</a><a href="#ai">AI 제작 방식 보기</a></p>
     </div>
     <figure class="th-media ow-title-media"><img src="assets/img/ow/ow-title-scene.png" alt="참룡산맥 위로 낙하하는 플레이어와 ‘용이 잠든 땅’ 타이틀 로고" width="1932" height="1090"><figcaption>인트로 타이틀 장면 · 개발 중 화면</figcaption></figure>
+    <div class="th-text ow-intro-copy">
+      <p>재직 중 만들고 있는 UE5 오픈월드입니다.</p>
+      <p class="hero-sub"><strong>현재 빌드</strong> · 사막 보스와 보상 방까지 플레이할 수 있습니다. 비통한 숲은 진입로만 공개했고, 참룡 성채 엔딩은 예정입니다.</p>
+      <p class="hero-sub"><span class="sn">거대한 검이 꽂힌 용의 시체가 그대로 산맥이 된 참룡산맥을 배경으로, 용의 브레스로 결정화된 땅인 결정화 사막을 지나, 용의 강력한 독이 섞인 피가 흘러 저주 받은 숲인 비통한 숲을 지나 참룡 성채를 해방하는 오픈월드입니다.</span> <span class="sn"><span class="cl">기획과 레벨 판정은 직접 하고,</span> <span class="cl">구현은 헤드 세션 하나를 두고 10개가 넘는 AI 세션을 지휘해 만들고 있습니다.</span></span></p>
+      <p class="hero-sub ow-jumps"><a href="#intent">동선 의도</a><a href="#ai">AI 제작 방식 보기</a></p>
+    </div>
   </div>
 </div>
 
@@ -62,15 +86,13 @@
     <dl class="spec">
       <div><dt>엔진</dt><dd>Unreal Engine 5</dd></div>
       <div><dt>기간</dt><dd>2026.10.23 ~ 개발 중 · 개인 작업</dd></div>
-      <div><dt>범위</dt><dd>인트로 · 첫 부락 · 세 갈래 · 참룡산맥 · 결정화 사막 · 엔딩(예정) / 비통한 숲 제외</dd></div>
+      <div><dt>범위</dt><dd>인트로 · 첫 부락 · 세 갈래 · 참룡산맥 · 결정화 사막 · 비통한 숲 진입로</dd></div>
       <div><dt>역할</dt><dd>기획·동선·배치 판정 직접 / 구현은 AI 세션 10개 이상</dd></div>
     </dl>
 
-    <div class="links case-links">
-      <a class="btn btn-primary i-play" href="https://youtu.be/VT03a5coIzo" target="_blank" rel="noopener" data-goatcounter-click="https://youtu.be/VT03a5coIzo" data-goatcounter-title="용이 잠든 땅 전체 플레이 영상">전체 플레이 영상 (13:49)</a>
-    </div>
     <section id="play" class="block-play" aria-labelledby="ow-highlight-heading">
       <h2 id="ow-highlight-heading">주요 장면 <span class="ow-clip-duration">약 1분 38초</span></h2>
+      <p class="ow-full-link"><a href="https://youtu.be/VT03a5coIzo" target="_blank" rel="noopener" data-goatcounter-click="https://youtu.be/VT03a5coIzo" data-goatcounter-title="용이 잠든 땅 전체 플레이 영상">전체 플레이 영상 (13:49)</a></p>
       <figure class="clip clip-wide">
         <video src="assets/media/ow-highlight.mp4" poster="assets/img/ow/ow-highlight-poster.jpg" controls playsinline preload="metadata" width="1280" height="720" aria-label="용이 잠든 땅 주요 장면, 약 1분 38초, 소리 있음">
           <a href="assets/media/ow-highlight.mp4">주요 장면 영상 파일 열기</a>
@@ -79,14 +101,29 @@
       </figure>
     </section>
 
-    <section id="boss">
-      <h2>보스 패턴 · <span class="cl">용의 마력에 이끌린 모래 벌레</span></h2>
-      <figure class="clip clip-wide">
-        <video src="assets/media/ow-boss-cycle.mp4?v=20261123" poster="assets/img/ow/ow-boss-cycle-poster.jpg?v=20261123" controls playsinline preload="metadata" width="1280" height="722" aria-label="용의 마력에 이끌린 모래 벌레 패턴 영상">
-          <a href="assets/media/ow-boss-cycle.mp4?v=20261123">보스 패턴 영상 파일 열기</a>
-        </video>
-        <figcaption>개발 중 시험장 영상 · 보스 패턴 한 바퀴 (38초)</figcaption>
+    <section id="intent">
+      <h2>설계 의도</h2>
+      <h3 class="case-title">갈림길에서 먼저 보이는 것</h3>
+      <p>좁은 협곡을 빠져나왔을 때 정면의 거대한 검이 참룡 사당으로 가는 길의 기준점이 되도록 배치했습니다. 이 자리에서 왼쪽의 결정화 사막과 오른쪽의 비통한 숲도 안내해, 플레이어가 다음 목적지를 고르게 했습니다.</p>
+      <figure class="ow-fork"><img src="assets/img/ow/ow-fork-view.jpg" width="1280" height="720" loading="lazy" alt="협곡을 빠져나온 플레이어 정면에 거대한 검이 보이고 위습이 세 방향을 안내하는 장면">
+        <figcaption>세 갈래 길에서 올려다본 검 · <a href="https://youtu.be/VT03a5coIzo?t=196" target="_blank" rel="noopener" data-goatcounter-click="https://youtu.be/VT03a5coIzo?t=196" data-goatcounter-title="세 갈래 길 플레이 장면">플레이 영상 3분 16초부터 보기 ↗</a></figcaption>
       </figure>
+      <h3 class="case-title">같은 조작, 지역마다 다른 규칙</h3>
+      <p>첫 부락에서 익힌 활공과 등반을 산맥과 사막에서도 쓰되, 지형과 날씨에 따라 다른 길을 찾도록 했습니다.</p>
+      <table class="t t-fluid ow-rules">
+        <thead><tr><th scope="col">지역</th><th scope="col">활공</th><th scope="col">등반</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">첫 부락</th><td><span class="rule-label" aria-hidden="true">활공 · </span>인트로와 짧은 이동에 자유롭게 사용</td><td><span class="rule-label" aria-hidden="true">등반 · </span>망루와 계단을 오름</td></tr>
+          <tr><th scope="row">참룡산맥</th><td><span class="rule-label" aria-hidden="true">활공 · </span>검의 코등이에서는 강풍으로 제한, 엔딩 뒤 해금 예정</td><td><span class="rule-label" aria-hidden="true">등반 · </span>용의 등뼈와 갈비뼈를 따라 오름</td></tr>
+          <tr><th scope="row">결정화 사막</th><td><span class="rule-label" aria-hidden="true">활공 · </span>결정화 폭풍이 부는 동안 제한, 폭풍이 사라지면 해금</td><td><span class="rule-label" aria-hidden="true">등반 · </span>미끄러운 가시 산을 피해 미로를 걸어서 통과</td></tr>
+        </tbody>
+      </table>
+      <h3 id="sword-descent" class="case-title">검 위에서 성당까지, 왜 활공을 막았나</h3>
+      <p>처음에는 검에서 성당까지 바로 활공하는 길을 구상했습니다. 용의 머리뼈를 먼저 보고 그 아래 성당으로 내려가는 흐름을 살리려고, 검의 코등이에서는 강풍으로 활공을 막고 머리 승강기와 식도 광산의 철길을 따라가게 했습니다.</p>
+      <p class="ow-scene-links">
+        <a href="https://youtu.be/VT03a5coIzo?t=386" target="_blank" rel="noopener" data-goatcounter-click="https://youtu.be/VT03a5coIzo?t=386" data-goatcounter-title="머리 승강기 플레이 장면">6:26 · 승강기에서 본 용의 머리뼈 ↗</a>
+        <a href="https://youtu.be/VT03a5coIzo?t=434" target="_blank" rel="noopener" data-goatcounter-click="https://youtu.be/VT03a5coIzo?t=434" data-goatcounter-title="식도 광산 철길 플레이 장면">7:14 · 철길을 따라 지하 성당으로 ↗</a>
+      </p>
     </section>
 
     <section id="flow">
@@ -100,7 +137,7 @@
       <table class="t t-fluid"><tbody>
         <tr><td class="k">인트로</td><td><span class="sn"><span class="cl">구름 위에서 깨어나 위습을 따라 낙하하고,</span> <span class="cl">위습을 잡고 활공해 해변 캠프에 내립니다.</span></span> <span class="sn">약 40초 안에 이동과 활공 조작을 하나씩 익힙니다.</span></td></tr>
         <tr><td class="k">첫 부락</td><td><span class="sn">몹 무리 셋 → 스위치 셋 → 봉인 철문 순서로 지나갑니다.</span> <span class="sn">전투와 탐험의 기본 흐름을 짧게 반복합니다.</span></td></tr>
-        <tr><td class="k">세 갈래</td><td><span class="sn"><span class="cl">철문을 열면 세 지역이 한눈에 보이고,</span> <span class="cl">세 길이 처음부터 모두 열려 있습니다.</span></span> <span class="sn"><span class="cl">왼쪽은 결정화 사막, 가운데는 참룡산맥, 오른쪽은 비통한 숲이며,</span> <span class="cl">순서는 플레이어가 고릅니다.</span></span></td></tr>
+        <tr><td class="k">세 갈래</td><td>철문을 나서면 왼쪽은 결정화 사막, 가운데는 참룡 사당, 오른쪽은 비통한 숲으로 이어집니다. 세 방향 중 어디로 갈지 고를 수 있고, 숲의 늪 입구를 통과하려면 ‘용의 피’가 필요합니다.</td></tr>
         <tr><td class="k">참룡산맥<br>(가운데)</td><td>
           <span class="sn">참룡 사당 입구 → 꼬리 승강기 → 거대한 검의 코등이(강풍으로 활공 불가) → 머리 승강기 → 식도 광산 → 지하 성당 순으로 이어집니다.</span>
           <span class="sn">지하 성당에서 ‘용의 피’를 얻습니다. 서쪽 문은 결정화 사막 지하로, 동쪽 길은 비통한 숲의 깊은 늪으로 이어집니다.</span>
@@ -114,18 +151,20 @@
         <tr><td class="k">엔딩<br>(예정)</td><td><span class="sn"><span class="cl">보물 셋을 가지고 성당에 들어서면 공명이 일어나 나선 계단이 열립니다.</span> <span class="cl">성당의 제단에 보물을 바치면 용의 입 너머 안개가 걷히고 참룡성채가 모습을 드러냅니다.</span></span></td></tr>
       </tbody></table>
 
-      <h3 class="case-title">같은 조작, 지역마다 다른 규칙</h3>
-      <p>같은 활공과 등반도 지역마다 규칙을 바꿔, 익숙한 조작을 새롭게 쓰게 했습니다.</p>
-      <table class="t t-fluid"><tbody>
-        <tr><td class="k">지역</td><td><b>첫 부락</b></td><td><b>참룡산맥</b></td><td><b>결정화 사막</b></td></tr>
-        <tr><td class="k">활공</td><td>인트로와 짧은 이동에 자유롭게 씀</td><td>검 위는 바람이 세서 막힘<br>(엔딩 뒤 해금)</td><td>폭풍 때문에 바람이 세서 막힘<br>(폭풍이 사라진 뒤 해금)</td></tr>
-        <tr><td class="k">등반</td><td>망루와 계단을 오름</td><td>용의 등뼈와 갈비뼈를 타고 오름</td><td>가시 산은 미끄러워 못 오름<br>→ 미로를 걸어서 지나감</td></tr>
-      </tbody></table>
-
       <div class="ow-plan" style="margin-top:28px">
         <figure><img src="assets/img/ow/ow-desert-plan.jpg" alt="결정화 사막 전체 평면도. 지상 길과 지하 길, 보스 공동 위치가 선으로 표시돼 있다" loading="lazy" width="1296" height="1540"><figcaption>결정화 사막 동선 평면도 (작업 문서)</figcaption></figure>
         <figure><img src="assets/img/ow/ow-storm-eye.jpg" alt="결정화 사막 폭풍 지대를 위에서 내려다본 화면" loading="lazy" width="1600" height="964"><figcaption>결정화 사막 폭풍 지대 (위에서 본 개발 중 화면)</figcaption></figure>
       </div>
+    </section>
+
+    <section id="boss">
+      <h2>보스 패턴 · <span class="cl">용의 마력에 이끌린 모래 벌레</span></h2>
+      <figure class="clip clip-wide">
+        <video src="assets/media/ow-boss-cycle.mp4?v=20261123" poster="assets/img/ow/ow-boss-cycle-poster.jpg?v=20261123" controls playsinline preload="metadata" width="1280" height="722" aria-label="용의 마력에 이끌린 모래 벌레 패턴 영상">
+          <a href="assets/media/ow-boss-cycle.mp4?v=20261123">보스 패턴 영상 파일 열기</a>
+        </video>
+        <figcaption>개발 중 시험장 영상 · 보스 패턴 한 바퀴 (38초)</figcaption>
+      </figure>
     </section>
 
     <section id="shots">
@@ -151,6 +190,7 @@
 
     <nav class="next-case">
       <a href="p2-level.html">← PANOPTICON</a>
+      <a href="index.html#ow-project">언리얼 프로젝트 목록</a>
       <a href="last-sanctuary.html">Last Sanctuary →</a>
     </nav>
   </div>
